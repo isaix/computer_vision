@@ -65,7 +65,7 @@ public class ObjRecognitionController
 	private boolean cameraActive;
 	
 	private HoughCirclesRun houghCirclesRun = new HoughCirclesRun();
-
+	private HoughLinesRun houghLinesRun = new HoughLinesRun();
 	
 	// property for object binding
 	private ObjectProperty<String> hsvValuesProp;
@@ -95,7 +95,7 @@ public class ObjRecognitionController
 			{
 				this.cameraActive = true;
 				
-				// grab a frame every 33 ms (30 frames/sec)
+				
 				Runnable frameGrabber = new Runnable() {
 					
 					@Override
@@ -104,6 +104,7 @@ public class ObjRecognitionController
 						// effectively grab and process a single frame
 						Mat frame = grabFrame();
 						
+						houghLinesRun.runLine(frame);
 						houghCirclesRun.run(frame);
 						
 

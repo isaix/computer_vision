@@ -10,10 +10,6 @@ import org.opencv.imgproc.Imgproc;
 import javafx.scene.image.ImageView;
 
 
-
-
-
-
 public class HoughCirclesRun {
 	
 
