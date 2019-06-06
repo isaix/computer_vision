@@ -63,6 +63,9 @@ public class ObjRecognitionController
 	// a flag to change the button behavior
 	private boolean cameraActive;
 	
+	private HoughCirclesRun houghCirclesRun = new HoughCirclesRun();
+
+	
 	// property for object binding
 	private ObjectProperty<String> hsvValuesProp;
 		
@@ -100,6 +103,9 @@ public class ObjRecognitionController
 					{
 						// effectively grab and process a single frame
 						Mat frame = grabFrame();
+						
+						houghCirclesRun.run(frame);
+						
 						// convert and show the frame
 						Image imageToShow = Utils.mat2Image(frame);
 						updateImageView(originalFrame, imageToShow);
