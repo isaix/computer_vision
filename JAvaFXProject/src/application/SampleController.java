@@ -17,12 +17,13 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-
 public class SampleController {
 	// the FXML button
+
 		@FXML
 		private Button button;
 		// the FXML image view
+
 		@FXML
 		private ImageView currentFrame;
 		
@@ -72,6 +73,7 @@ public class SampleController {
 					this.timer.scheduleAtFixedRate(frameGrabber, 0, 33, TimeUnit.MILLISECONDS);
 					
 					// update the button content
+					
 					this.button.setText("Stop Camera");
 				}
 				else
@@ -162,6 +164,7 @@ public class SampleController {
 		 * @param image
 		 *            the {@link Image} to show
 		 */
+
 		private void updateImageView(ImageView view, Image image)
 		{
 			Utils.onFXThread(view.imageProperty(), image);

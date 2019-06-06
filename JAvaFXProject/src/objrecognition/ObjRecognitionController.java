@@ -1,5 +1,6 @@
 package objrecognition;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -77,7 +78,7 @@ public class ObjRecognitionController
 	{
 		// bind a text property with the string containing the current range of
 		// HSV values for object detection
-		hsvValuesProp = new SimpleObjectProperty<>();
+		hsvValuesProp = new SimpleObjectProperty<String>();
 		this.hsvCurrentValues.textProperty().bind(hsvValuesProp);
 				
 		// set a fixed width for all the image to show and preserve image ratio
@@ -89,7 +90,6 @@ public class ObjRecognitionController
 		{
 			// start the video capture
 			this.capture.open(0);
-			
 			// is the video stream available?
 			if (this.capture.isOpened())
 			{
@@ -106,9 +106,12 @@ public class ObjRecognitionController
 						
 						houghCirclesRun.run(frame);
 						
+
 						// convert and show the frame
 						Image imageToShow = Utils.mat2Image(frame);
 						updateImageView(originalFrame, imageToShow);
+						
+						
 					}
 				};
 				
@@ -136,12 +139,26 @@ public class ObjRecognitionController
 		}
 	}
 	
+	public static short[][] initArray(Mat frame) {
+		short[][] array = new short[frame.cols()][frame.rows()];
+		return array;
+	}
+	
+	public static short[][] createArray(short[][] array, Mat frame){
+		for(int i = 0; i<= array.length; i++) {
+			for(int j = 0; j<= array[i].length; j++) {
+				short found = (short) frame.checkVector(i, j);
+				array[i][j] = found;
+			}
+		}
+		return array;
+	}
 	/**
 	 * Get a frame from the opened video stream (if any)
 	 * 
 	 * @return the {@link Image} to show
 	 */
-	private Mat grabFrame()
+	public Mat grabFrame()
 	{
 		Mat frame = new Mat();
 		
@@ -231,7 +248,7 @@ public class ObjRecognitionController
 	private Mat findAndDrawBalls(Mat maskedImage, Mat frame)
 	{
 		// init
-		List<MatOfPoint> contours = new ArrayList<>();
+		List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 		Mat hierarchy = new Mat();
 		
 		// find contours

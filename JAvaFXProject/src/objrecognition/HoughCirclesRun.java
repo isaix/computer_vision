@@ -1,22 +1,26 @@
 package objrecognition;
 
- import org.opencv.core.*;
+
+import org.opencv.core.*;
 import org.opencv.highgui.HighGui;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
- import javafx.scene.image.ImageView;
+
+import javafx.scene.image.ImageView;
 
 
 
 
- public class HoughCirclesRun {
 
 
-     public Mat run(Mat frame) {
+public class HoughCirclesRun {
+	
 
-
-         // Load an image
+    public Mat run(Mat frame) {
+    	
+  
+        // Load an image
         // Check if image is loaded fine
         if( frame.empty() ) {
             System.out.println("Error opening image!");
@@ -31,6 +35,7 @@ import org.opencv.imgproc.Imgproc;
 
 
          Imgproc.cvtColor(frame, gray, Imgproc.COLOR_BGR2GRAY);
+
         Imgproc.medianBlur(gray, gray, 5);
         Mat circles = new Mat();
         Imgproc.HoughCircles(gray, circles, Imgproc.HOUGH_GRADIENT, 1.0,
@@ -47,9 +52,10 @@ import org.opencv.imgproc.Imgproc;
             Imgproc.circle(frame, center, radius, new Scalar(255,0,255), 3, 8, 0 );
         }
 
-         return frame;
-
-
-
-     }    
-} 
+        
+        return frame;
+        
+        
+     
+    }    
+}
