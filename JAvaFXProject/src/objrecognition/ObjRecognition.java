@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 public class ObjRecognition extends Application
 {
 	
+
 	@Override
 	public void start(Stage primaryStage)
 	{
@@ -35,7 +36,7 @@ public class ObjRecognition extends Application
 			primaryStage.show();
 			
 			// set the proper behavior on closing the application
-			ObjRecognitionController controller = loader.getController();
+			final ObjRecognitionController controller = loader.getController();
 			primaryStage.setOnCloseRequest((new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent we)
 				{
@@ -49,10 +50,12 @@ public class ObjRecognition extends Application
 		}
 	}
 	
+	
 	public static void main(String[] args)
 	{
 		// load the native OpenCV library
 		nu.pattern.OpenCV.loadShared();
+		
 		
 		launch(args);
 	}

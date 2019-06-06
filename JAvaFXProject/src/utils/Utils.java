@@ -52,12 +52,12 @@ public final class Utils
 	 * Support for the {@link mat2image()} method
 	 * 
 	 * @param original
-	 *            the {@link Mat} object in BGR or grayscale
+	 *            the {@link Mat} object in BGR or 
 	 * @return the corresponding {@link BufferedImage}
 	 */
 	private static BufferedImage matToBufferedImage(Mat original)
 	{
-		// init
+		
 		BufferedImage image = null;
 		int width = original.width(), height = original.height(), channels = original.channels();
 		byte[] sourcePixels = new byte[width * height * channels];

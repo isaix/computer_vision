@@ -1,16 +1,12 @@
 package application;
 	
-import java.io.IOException;
-import org.opencv.core.Core;
-
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.fxml.FXMLLoader;
-
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 
 public class Main extends Application {
@@ -34,7 +30,7 @@ public class Main extends Application {
 			primaryStage.show();
 			
 			// set the proper behavior on closing the application
-			SampleController controller = loader.getController();
+			final SampleController controller = loader.getController();
 			primaryStage.setOnCloseRequest((new EventHandler<WindowEvent>() {
 				public void handle(WindowEvent we)
 				{
@@ -58,6 +54,7 @@ public class Main extends Application {
 	{
 		// load the native OpenCV library
 		nu.pattern.OpenCV.loadShared();
+		//System.loadLibrary(org.opencv.core.Core.NATIVE_LIBRARY_NAME);
 		
 		launch(args);
 	}
