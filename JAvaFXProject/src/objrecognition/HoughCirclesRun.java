@@ -1,11 +1,15 @@
 package objrecognition;
 
+
 import org.opencv.core.*;
 import org.opencv.highgui.HighGui;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
+
 import javafx.scene.image.ImageView;
+
+
 
 
 
@@ -24,13 +28,14 @@ public class HoughCirclesRun {
                      +"] \n");
             System.exit(-1);
         }
-   
-       
-        
-        Mat gray = new Mat();
-       
-        
-        Imgproc.cvtColor(frame, gray, Imgproc.COLOR_BGR2GRAY);
+
+
+
+         Mat gray = new Mat();
+
+
+         Imgproc.cvtColor(frame, gray, Imgproc.COLOR_BGR2GRAY);
+
         Imgproc.medianBlur(gray, gray, 5);
         Mat circles = new Mat();
         Imgproc.HoughCircles(gray, circles, Imgproc.HOUGH_GRADIENT, 1.0,
@@ -46,6 +51,7 @@ public class HoughCirclesRun {
             int radius = (int) Math.round(c[2]);
             Imgproc.circle(frame, center, radius, new Scalar(255,0,255), 3, 8, 0 );
         }
+
         
         return frame;
         

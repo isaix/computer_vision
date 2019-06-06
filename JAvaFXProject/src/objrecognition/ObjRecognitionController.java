@@ -65,6 +65,7 @@ public class ObjRecognitionController
 	private boolean cameraActive;
 	
 	private HoughCirclesRun houghCirclesRun = new HoughCirclesRun();
+
 	
 	// property for object binding
 	private ObjectProperty<String> hsvValuesProp;
@@ -101,12 +102,10 @@ public class ObjRecognitionController
 					public void run()
 					{
 						// effectively grab and process a single frame
-						// Mat frame = grabFrame();
-						Mat frame = houghCirclesRun.run(grabFrame());
+						Mat frame = grabFrame();
 						
-						short[][] array = initArray(frame);
-						createArray(array,frame);
-						System.out.println(frame.checkVector(10, 10));
+						houghCirclesRun.run(frame);
+						
 
 						// convert and show the frame
 						Image imageToShow = Utils.mat2Image(frame);
