@@ -47,8 +47,12 @@ public class HoughCirclesRun {
             Point center = new Point(Math.round(c[0]), Math.round(c[1]));
             // circle center
             Imgproc.circle(frame, center, 1, new Scalar(0,100,100), 3, 8, 0 );
+            System.out.println("center: " + center);
             // circle outline
             int radius = (int) Math.round(c[2]);
+            System.out.println("radius: " +radius );
+            
+            System.out.println("in frame: " + frame);
             Imgproc.circle(frame, center, radius, new Scalar(255,0,255), 3, 8, 0 );
         }
 
