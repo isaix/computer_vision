@@ -14,24 +14,12 @@ public class HoughCirclesRun {
 	ArrayList<Integer> notFoundIndex = new ArrayList<Integer>();
 
 
+	
+
+
 	public Mat run(Mat frame) {
 
-
-		// Load an image
-		// Check if image is loaded fine
-		if( frame.empty() ) {
-			System.out.println("Error opening image!");
-			System.out.println("Program Arguments: [image_name -- default "
-					+"] \n");
-			System.exit(-1);
-		}
-
-
-
 		Mat gray = new Mat();
-
-
-		Imgproc.cvtColor(frame, gray, Imgproc.COLOR_BGR2GRAY);
 
 		Imgproc.medianBlur(gray, gray, 5);
 		Mat circles = new Mat();
@@ -117,7 +105,6 @@ public class HoughCirclesRun {
 
 
 		return frame;
-
 
 
 	}    
