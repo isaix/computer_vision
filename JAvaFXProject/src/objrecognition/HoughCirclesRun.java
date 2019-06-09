@@ -7,6 +7,9 @@ import java.util.ArrayList; // import the ArrayList class
 
 
 
+
+
+
 public class HoughCirclesRun {
 
 	ArrayList<Point> ballCoordinates = new ArrayList<Point>();
@@ -21,11 +24,14 @@ public class HoughCirclesRun {
 
 		Mat gray = new Mat();
 
+
+		Imgproc.cvtColor(frame, gray, Imgproc.COLOR_BGR2GRAY);
+		
 		Imgproc.medianBlur(gray, gray, 5);
 		Mat circles = new Mat();
 		Imgproc.HoughCircles(gray, circles, Imgproc.HOUGH_GRADIENT, 1.0,
 				(double)gray.rows()/16, // change this value to detect circles with different distances to each other
-				100.0, 30.0, 1, 30); // change the last two parameters
+				100.0, 30.0, 1, 50); // change the last two parameters
 		// (min_radius & max_radius) to detect larger circles
 
 			for (int x = 0; x < circles.cols(); x++) {
