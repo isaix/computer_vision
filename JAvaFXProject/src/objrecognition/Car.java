@@ -1,33 +1,20 @@
 package objrecognition;
 
+import java.util.ArrayList;
 
-import org.opencv.core.*;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.IOException;
-import java.util.ArrayList; // import the ArrayList class
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
-
-
-
-
-
-
-public class HoughCirclesRun {
-
-	ArrayList<Point> ballCoordinates = new ArrayList<Point>();
-	ArrayList<Point> foundCoordinates = new ArrayList<Point>();
-
-
+public class Car {
 	
-
-
+	ArrayList<Point> carPoints = new ArrayList<Point>();
+	ArrayList<Point> ballCoordinates = new ArrayList<Point>();
+	
 	public Mat run(Mat frame) {
 
 		Mat gray = new Mat();
-
 
 		Imgproc.cvtColor(frame, gray, Imgproc.COLOR_BGR2GRAY);
 		
@@ -35,7 +22,7 @@ public class HoughCirclesRun {
 		Mat circles = new Mat();
 		Imgproc.HoughCircles(gray, circles, Imgproc.HOUGH_GRADIENT, 1.0,
 				(double)gray.rows()/16, // change this value to detect circles with different distances to each other
-				100.0, 30.0, 1, 30); // change the last two parameters
+				100.0, 30.0, 40, 100); // change the last two parameters
 		// (min_radius & max_radius) to detect larger circles
 
 			for (int x = 0; x < circles.cols(); x++) {
@@ -74,7 +61,7 @@ public class HoughCirclesRun {
 						} 
 					}
 					if (!found) {
-						foundCoordinates.add(center);
+						carPoints.add(center);
 						//System.out.println("new point found : " + center);
 					}
 				//}
@@ -92,28 +79,28 @@ public class HoughCirclesRun {
 //		
 
 		
-		if (ballCoordinates.isEmpty() && !foundCoordinates.isEmpty()) {
+		if (ballCoordinates.isEmpty() && !carPoints.isEmpty()) {
 			System.out.println("changes registered 1");
 			System.out.println("should be clear : "+ ballCoordinates);
 
 
-			ballCoordinates.addAll(foundCoordinates);
-		} else if (!ballCoordinates.containsAll(foundCoordinates)) {
+			ballCoordinates.addAll(carPoints);
+		} else if (!ballCoordinates.containsAll(carPoints)) {
 			System.out.println("changes registered 2");
 
 			ballCoordinates.clear();
-			ballCoordinates.addAll(foundCoordinates);
+			ballCoordinates.addAll(carPoints);
 			//ballCoordinates = foundCoordinates; 
 
 		}
 		
 		
 		
-		System.out.println("before clear : "+ foundCoordinates);
+		System.out.println("before clear : "+ carPoints);
 
 
-		foundCoordinates.clear();
-		System.out.println("after clear : "+ foundCoordinates);
+		carPoints.clear();
+		System.out.println("after clear : "+ carPoints);
 
 
 
