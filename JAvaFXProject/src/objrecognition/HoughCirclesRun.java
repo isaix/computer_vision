@@ -3,7 +3,12 @@ package objrecognition;
 
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
+
+import java.io.IOException;
 import java.util.ArrayList; // import the ArrayList class
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 
 
@@ -14,7 +19,6 @@ public class HoughCirclesRun {
 
 	ArrayList<Point> ballCoordinates = new ArrayList<Point>();
 	ArrayList<Point> foundCoordinates = new ArrayList<Point>();
-	ArrayList<Integer> notFoundIndex = new ArrayList<Integer>();
 
 
 	
@@ -48,14 +52,14 @@ public class HoughCirclesRun {
 				Imgproc.circle(frame, center, radius, new Scalar(255,0,255), 3, 8, 0 );
 				
 				
-				if (ballCoordinates.isEmpty()) {
-					
-					ballCoordinates.add(center);
-					
-					//System.out.println("new point found to empty array: " + center);
-
-					
-				} else {
+//				if (ballCoordinates.isEmpty()) {
+//					
+//					ballCoordinates.add(center);
+//					
+//					//System.out.println("new point found to empty array: " + center);
+//
+//					
+//				} else {
 					
 					Boolean found = false;
 										
@@ -64,22 +68,22 @@ public class HoughCirclesRun {
 //							ballCoordinates.remove(coordinates);
 //							ballCoordinates.add(center);
 //							System.out.println("point: " + coordinates + " replaced with : " + center);
-							foundCoordinates.add(coordinates);
+							//foundCoordinates.add(coordinates);
 							found = true;
-							//break outerloop;
+							break;
 						} 
 					}
 					if (!found) {
 						foundCoordinates.add(center);
 						//System.out.println("new point found : " + center);
 					}
-				}
+				//}
 
 			}
 		
-		
-		
-		
+//		
+//		
+//		
 //		System.out.println("foundCoordinates: " + foundCoordinates);
 //		
 //		System.out.println("ballCoordinates: " + ballCoordinates);
@@ -90,6 +94,8 @@ public class HoughCirclesRun {
 		
 		if (ballCoordinates.isEmpty() && !foundCoordinates.isEmpty()) {
 			System.out.println("changes registered 1");
+			System.out.println("should be clear : "+ ballCoordinates);
+
 
 			ballCoordinates.addAll(foundCoordinates);
 		} else if (!ballCoordinates.containsAll(foundCoordinates)) {
@@ -103,11 +109,12 @@ public class HoughCirclesRun {
 		
 		
 		
-		
+		System.out.println("before clear : "+ foundCoordinates);
 
 
 		foundCoordinates.clear();
-		
+		System.out.println("after clear : "+ foundCoordinates);
+
 
 
 		return frame;
