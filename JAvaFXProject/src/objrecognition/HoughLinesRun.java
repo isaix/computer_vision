@@ -24,7 +24,7 @@ class HoughLinesRun {
         
         //! [edge_detection]
         // Edge detection
-        Imgproc.Canny(frame, dst, 100, 600, 3, false);
+        Imgproc.Canny(frame, dst, 50, 100, 3, false);
         
         //! [edge_detection]
 
