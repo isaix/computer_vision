@@ -13,16 +13,18 @@ class HoughLinesRun {
         Mat dst = new Mat(), cdst = new Mat(), cdstP;
 
         // Check if image is loaded fine
-        if( frame.empty() ) {
-            System.out.println("Error opening image!");
-            System.out.println("Program Arguments: [image_name -- default "
-                 );
-            System.exit(-1);
-        }
+//        if( frame.empty() ) {
+//            System.out.println("Error opening image!");
+//            System.out.println("Program Arguments: [image_name -- default "
+//                 );
+//            System.exit(-1);
+//        }
         
         //! [edge_detection]
         // Edge detection
-        Imgproc.Canny(frame, dst, 50, 200, 3, false);
+        //Imgproc.Canny(frame, dst, 50, 200, 3, false);
+        //Imgproc.Canny(frame, dst, 100, 800, 3, false); meget bred
+        Imgproc.Canny(frame, dst, 200, 500, 3, false);
         //! [edge_detection]
 
         // Copy edges to the images that will display the results in BGR
