@@ -45,7 +45,7 @@ public class HoughCirclesRun {
 		circles = new Mat();
 		Imgproc.HoughCircles(gray, circles, Imgproc.HOUGH_GRADIENT, 1.0,
 				(double)gray.rows()/16, // change this value to detect circles with different distances to each other
-				100.0, 30.0, 1, 30); // change the last two parameters
+				100.0, 30.0, 1, 25); // change the last two parameters
 		// (min_radius & max_radius) to detect larger circles
 
 		//System.out.println("number of points found " + circles.cols() );
