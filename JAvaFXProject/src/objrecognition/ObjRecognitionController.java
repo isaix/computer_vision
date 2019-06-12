@@ -66,6 +66,7 @@ public class ObjRecognitionController
 	
 	private HoughCirclesRun houghCirclesRun = new HoughCirclesRun();
 	private HoughLinesRun houghLinesRun = new HoughLinesRun();
+	private Car car = new Car();
 	
 	// property for object binding
 	private ObjectProperty<String> hsvValuesProp;
@@ -89,7 +90,7 @@ public class ObjRecognitionController
 		if (!this.cameraActive)
 		{
 			// start the video capture
-			this.capture.open(0);
+			this.capture.open(1);
 			// is the video stream available?
 			if (this.capture.isOpened())
 			{
@@ -106,6 +107,7 @@ public class ObjRecognitionController
 						
 						houghLinesRun.runLine(frame);
 						houghCirclesRun.run(frame);
+						car.run(frame);
 						
 
 						// convert and show the frame
