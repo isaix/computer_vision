@@ -12,9 +12,6 @@ import java.util.logging.SimpleFormatter;
 
 
 
-
-
-
 public class HoughCirclesRun {
 
 	ArrayList<Point> ballCoordinates = new ArrayList<Point>();
