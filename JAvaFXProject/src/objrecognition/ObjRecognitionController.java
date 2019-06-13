@@ -34,28 +34,7 @@ public class ObjRecognitionController
 	// the FXML area for showing the current frame
 	@FXML
 	private ImageView originalFrame;
-	// the FXML area for showing the mask
-	@FXML
-	private ImageView maskImage;
-	// the FXML area for showing the output of the morphological operations
-	@FXML
-	private ImageView morphImage;
-	// FXML slider for setting HSV ranges
-	@FXML
-	private Slider hueStart;
-	@FXML
-	private Slider hueStop;
-	@FXML
-	private Slider saturationStart;
-	@FXML
-	private Slider saturationStop;
-	@FXML
-	private Slider valueStart;
-	@FXML
-	private Slider valueStop;
-	// FXML label to show the current values set with the sliders
-	@FXML
-	private Label hsvCurrentValues;
+	
 	
 	// a timer for acquiring the video stream
 	private ScheduledExecutorService timer;
@@ -68,8 +47,6 @@ public class ObjRecognitionController
 	private HoughLinesRun houghLinesRun = new HoughLinesRun();
 	private Car car = new Car();
 	
-	// property for object binding
-	private ObjectProperty<String> hsvValuesProp;
 		
 	/**
 	 * The action triggered by pushing the button on the GUI
@@ -79,18 +56,14 @@ public class ObjRecognitionController
 	{
 		// bind a text property with the string containing the current range of
 		// HSV values for object detection
-		hsvValuesProp = new SimpleObjectProperty<String>();
-		this.hsvCurrentValues.textProperty().bind(hsvValuesProp);
 				
 		// set a fixed width for all the image to show and preserve image ratio
-		this.imageViewProperties(this.originalFrame, 400);
-		this.imageViewProperties(this.maskImage, 200);
-		this.imageViewProperties(this.morphImage, 200);
+		this.imageViewProperties(this.originalFrame, 700);
 		
 		if (!this.cameraActive)
 		{
 			// start the video capture
-			this.capture.open(0);
+			this.capture.open(1);
 			// is the video stream available?
 			if (this.capture.isOpened())
 			{
@@ -105,9 +78,9 @@ public class ObjRecognitionController
 						// effectively grab and process a single frame
 						Mat frame = grabFrame();
 						
-						houghLinesRun.runLine(frame);
+						//houghLinesRun.runLine(frame);
 						houghCirclesRun.run(frame);
-						car.run(frame);
+						//car.run(frame);
 						
 
 						// convert and show the frame
@@ -142,20 +115,7 @@ public class ObjRecognitionController
 		}
 	}
 	
-	public static short[][] initArray(Mat frame) {
-		short[][] array = new short[frame.cols()][frame.rows()];
-		return array;
-	}
 	
-	public static short[][] createArray(short[][] array, Mat frame){
-		for(int i = 0; i<= array.length; i++) {
-			for(int j = 0; j<= array[i].length; j++) {
-				short found = (short) frame.checkVector(i, j);
-				array[i][j] = found;
-			}
-		}
-		return array;
-	}
 	/**
 	 * Get a frame from the opened video stream (if any)
 	 * 
@@ -173,58 +133,6 @@ public class ObjRecognitionController
 				// read the current frame
 				this.capture.read(frame);
 				
-				// if the frame is not empty, process it
-				if (!frame.empty())
-				{
-					// init
-					Mat blurredImage = new Mat();
-					Mat hsvImage = new Mat();
-					Mat mask = new Mat();
-					Mat morphOutput = new Mat();
-					
-					// remove some noise
-					Imgproc.blur(frame, blurredImage, new Size(7, 7));
-					
-					// convert the frame to HSV
-					Imgproc.cvtColor(blurredImage, hsvImage, Imgproc.COLOR_BGR2HSV);
-					
-					// get thresholding values from the UI
-					// remember: H ranges 0-180, S and V range 0-255
-					Scalar minValues = new Scalar(this.hueStart.getValue(), this.saturationStart.getValue(),
-							this.valueStart.getValue());
-					Scalar maxValues = new Scalar(this.hueStop.getValue(), this.saturationStop.getValue(),
-							this.valueStop.getValue());
-					
-					// show the current selected HSV range
-					String valuesToPrint = "Hue range: " + minValues.val[0] + "-" + maxValues.val[0]
-							+ "\tSaturation range: " + minValues.val[1] + "-" + maxValues.val[1] + "\tValue range: "
-							+ minValues.val[2] + "-" + maxValues.val[2];
-					Utils.onFXThread(this.hsvValuesProp, valuesToPrint);
-					
-					// threshold HSV image to select tennis balls
-					Core.inRange(hsvImage, minValues, maxValues, mask);
-					// show the partial output
-					this.updateImageView(this.maskImage, Utils.mat2Image(mask));
-					
-					// morphological operators
-					// dilate with large element, erode with small ones
-					Mat dilateElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(24, 24));
-					Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(12, 12));
-					
-					Imgproc.erode(mask, morphOutput, erodeElement);
-					Imgproc.erode(morphOutput, morphOutput, erodeElement);
-					
-					Imgproc.dilate(morphOutput, morphOutput, dilateElement);
-					Imgproc.dilate(morphOutput, morphOutput, dilateElement);
-					
-					// show the partial output
-					this.updateImageView(this.morphImage, Utils.mat2Image(morphOutput));
-					
-					// find the tennis ball(s) contours and show them
-					frame = this.findAndDrawBalls(morphOutput, frame);
-
-				}
-				
 			}
 			catch (Exception e)
 			{
@@ -237,38 +145,6 @@ public class ObjRecognitionController
 		return frame;
 	}
 	
-	/**
-	 * Given a binary image containing one or more closed surfaces, use it as a
-	 * mask to find and highlight the objects contours
-	 * 
-	 * @param maskedImage
-	 *            the binary image to be used as a mask
-	 * @param frame
-	 *            the original {@link Mat} image to be used for drawing the
-	 *            objects contours
-	 * @return the {@link Mat} image with the objects contours framed
-	 */
-	private Mat findAndDrawBalls(Mat maskedImage, Mat frame)
-	{
-		// init
-		List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
-		Mat hierarchy = new Mat();
-		
-		// find contours
-		Imgproc.findContours(maskedImage, contours, hierarchy, Imgproc.RETR_CCOMP, Imgproc.CHAIN_APPROX_SIMPLE);
-		
-		// if any contour exist...
-		if (hierarchy.size().height > 0 && hierarchy.size().width > 0)
-		{
-			// for each contour, display it in blue
-			for (int idx = 0; idx >= 0; idx = (int) hierarchy.get(0, idx)[0])
-			{
-				Imgproc.drawContours(frame, contours, idx, new Scalar(250, 0, 0));
-			}
-		}
-		
-		return frame;
-	}
 	
 	/**
 	 * Set typical {@link ImageView} properties: a fixed width and the

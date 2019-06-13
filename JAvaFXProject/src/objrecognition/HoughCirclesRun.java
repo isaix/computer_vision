@@ -20,15 +20,19 @@ public class HoughCirclesRun {
 	int frameDelay = 30;
 
 	double tolerance = 10.0;
+	
+	int validCount = 0;
 
 	Mat circles;
 
 	ArrayList<Point> ballCoordinates = new ArrayList<Point>();
-	ArrayList<Point> foundCoordinates = new ArrayList<Point>();
-
-	AlgorithmController ac = new AlgorithmController();
-
-
+	static ArrayList<Point> validCoordinates = new ArrayList<Point>();	
+	ArrayList<Point> foundCoordinates = new ArrayList<Point>();	
+	
+	
+	static public ArrayList<Point> getValidCoordinates(){
+		return validCoordinates;
+	}
 
 
 
@@ -120,28 +124,42 @@ public class HoughCirclesRun {
 				System.out.println("change");
 
 				ballCoordinates.addAll(foundCoordinates);
-			} else if (!ballCoordinates.containsAll(foundCoordinates)) {
-				
-				System.out.println("change");
-
-				
-				//ballCoordinates = foundCoordinates; 
-				
+			
+			} else {
+								
 				if(!(ballCoordinates.size() == foundCoordinates.size())) {
+					System.out.println("change, new size");
 					ballCoordinates.clear();
 					ballCoordinates.addAll(foundCoordinates);
+				} else {
+					boolean similar = false;
+					
+					for (Point foundCoordinate : foundCoordinates) {
+						for (Point ballCoordinate : ballCoordinates) {
+							similar = false;
+							if ((foundCoordinate.x - tolerance < ballCoordinate.x && ballCoordinate.x < foundCoordinate.x + tolerance) && (foundCoordinate.y - tolerance < ballCoordinate.y && ballCoordinate.y < foundCoordinate.y + tolerance)) {
+								similar = true;
+								break;
+							}
+						}
+						if(!similar) {
+							System.out.println("change, not similar");
+							ballCoordinates.clear();
+							ballCoordinates.addAll(foundCoordinates);
+							validCount = 0;
+							System.out.println("valid count reset");
+							break;
+						} 
+					}
+					if (similar) {
+						validCount++;
+						System.out.println("valid incremented: " + validCount);
+					}
+					
 				}
 
-			} else {
-				if (ballCoordinates.size() > foundCoordinates.size()) {
-					System.out.println("clearing ballCoordinates because");
-					System.out.println(ballCoordinates);
-					System.out.println("is bigger than");
-					System.out.println(foundCoordinates);
-					ballCoordinates.clear();
-				}
-				
-			}
+			} 
+//			
 
 			System.out.println("\n found balls: " + ballCoordinates.size());
 			System.out.println("and the coordinates are: " + ballCoordinates);
@@ -150,6 +168,35 @@ public class HoughCirclesRun {
 
 
 			foundCoordinates.clear();
+			
+			if(validCount == 3) {
+				
+				boolean similar = false;
+				
+				for (Point ballCoordinate : ballCoordinates) {
+					for (Point validCoordinate : validCoordinates) {
+						similar = false;
+						if ((ballCoordinate.x - tolerance < validCoordinate.x && validCoordinate.x < ballCoordinate.x + tolerance) && (ballCoordinate.y - tolerance < validCoordinate.y && validCoordinate.y < ballCoordinate.y + tolerance)) {
+							similar = true;
+							break;
+						}
+					}
+					if(!similar) {
+						System.out.println("a new valid array");
+						validCoordinates.clear();
+						validCoordinates.addAll(ballCoordinates);
+						validCount = 0;
+						//System.out.println("valid count reset");
+						break;
+					} 
+				}
+				if (similar) {
+					System.out.println("valid array is still the same");
+				}
+				
+				validCount = 0;
+			}
+
 
 		}
 
@@ -161,6 +208,8 @@ public class HoughCirclesRun {
 			counter++;
 			return oldFrame;
 		}
+		
+		//return frame;
 
 
 	}    
