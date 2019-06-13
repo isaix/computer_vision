@@ -1,6 +1,15 @@
 package carConnection;
 
+import java.util.ArrayList;
+
+import org.opencv.core.Algorithm;
+import org.opencv.core.Point;
+
+import algorithm.AlgorithmController;
 import algorithm.Move;
+import algorithm.Node;
+import objrecognition.Car;
+import objrecognition.HoughCirclesRun;
 
 public class SocketRunnable implements Runnable{
 
@@ -14,28 +23,31 @@ public class SocketRunnable implements Runnable{
 		
 		int i = 0; 
 		
-		Move[] moves = new Move[] {new Move(30, 90), new Move(30, 90), new Move(30, 90), new Move(30, 90)};
+		//Move[] moves = new Move[] {new Move(30, 90), new Move(30, 90), new Move(30, 90), new Move(30, 90)};
 		
 		
 		while(connected) {
-			//hent move-objekt
 			
 			
-			if(i == moves.length) {
-				break;
+			ArrayList<Point> points = HoughCirclesRun.getvalidBallCoordinates();
+			if(points == null) {
+				continue;
 			}
 			
+			ArrayList<Point> car = Car.getvalidCarCoordinates();
 			
-			String resp = client.sendMove(moves[i]);
+			ArrayList<Node> nodes = AlgorithmController.ConvertToGraph(points, car.get(0));
+			nodes = AlgorithmController.convertToMST(nodes, nodes.get(0));
+			ArrayList<Integer> moves = AlgorithmController.performDFS(nodes, nodes.get(0));
+			Move move = AlgorithmController.calculateMove(nodes, car, moves.get(1));
 			
-			System.out.println(resp);
-			
-			i++;
-			
+			String resp = client.sendMove(move);
+						
 			if(resp.toLowerCase().equals("done")) {
 				client.stopConnection();
 				connected = false; 
 			}
+			
 		}
 		
 	}
