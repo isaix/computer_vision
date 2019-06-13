@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import java.util.Stack;
 import org.opencv.core.*;
 
-import Algorithm.Move;
+import algorithm.Move;
 
 
 public class AlgorithmController {
@@ -100,16 +100,26 @@ public class AlgorithmController {
 	}
 	
 	//Calculate the move needed to move from current position to next ball
-	public static Move calculateMove(ArrayList<Node> graph, int fromIndex, int toIndex, double carAngle) {
+	public static Move calculateMove(ArrayList<Node> graph, ArrayList<Point> car, int toIndex) {
 		Move move = new Move();
-		Node from = graph.get(fromIndex);
+		Point middlePoint = new Point((car.get(1).x + car.get(2).x)/2,(car.get(1).y - car.get(2).y)/2);
+		
+		//
+		
+		Node A = new Node((int)car.get(0).x, (int)car.get(0).y);
+		
+		Node B = new Node((int) middlePoint.x, (int) middlePoint.y);
+		
 		Node to = graph.get(toIndex);
-		double dist = to.getDistances().get(from.getNumber());
-		int a = Math.abs(to.getX() - from.getX());
-		int b = Math.abs(to.getY() - from.getY());
+		double dist = calculateDistance(B, to);
+		
+		double a = dist;
+		double b = calculateDistance(A, to);
+		double c = calculateDistance(A, B);
+		
 		move.setDistance(dist);
-		double cosC = (Math.pow(a, 2) + Math.pow(dist, 2) - Math.pow(b, 2))/(2*a*dist);
-		move.setAngle((90 - carAngle) + Math.toDegrees(Math.acos(cosC)));
+		double cosC = (Math.pow(a, 2) + Math.pow(c, 2) - Math.pow(b, 2))/(2*a*c);
+		move.setAngle(Math.toDegrees(Math.acos(cosC)));
 		
 		return move;
 	}

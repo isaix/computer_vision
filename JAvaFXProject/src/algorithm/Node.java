@@ -17,7 +17,12 @@ public class Node implements Comparable{
 		this.x = x;
 		this.y = y;
 		this.number = number;
-		
+	}
+	
+	public Node(int x, int y) {
+		distances = new HashMap<Integer, Double>();
+		this.x = x;
+		this.y = y;
 	}
 
 	public int getX() {

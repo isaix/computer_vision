@@ -1,6 +1,6 @@
 package carConnection;
 
-import Algorithm.Move;
+import algorithm.Move;
 
 public class SocketRunnable implements Runnable{
 
