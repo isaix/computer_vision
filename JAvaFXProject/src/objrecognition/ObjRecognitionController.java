@@ -79,8 +79,8 @@ public class ObjRecognitionController
 						Mat frame = grabFrame();
 						
 						//houghLinesRun.runLine(frame);
-						houghCirclesRun.run(frame);
-						//car.run(frame);
+						//houghCirclesRun.run(frame);
+						car.run(frame);
 						
 
 						// convert and show the frame
