@@ -122,10 +122,6 @@ public class AlgorithmController {
 		double cosC = (Math.pow(a, 2) + Math.pow(dist, 2) - Math.pow(b, 2))/(2*a*dist);
 		return Math.toDegrees(Math.acos(cosC));
 	}
-	
-	public static void resetOrder(){
-		order = new ArrayList<Integer>();
-	}
 
 	//Calculates total distance (in matrix coordinates) using Pythagoras
 	private static double calculateDistance(Node from, Node to){
