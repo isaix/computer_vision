@@ -4,7 +4,7 @@ package objrecognition;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
-import Algorithm.AlgorithmController;
+import algorithm.AlgorithmController;
 
 import java.io.IOException;
 import java.util.ArrayList; // import the ArrayList class
