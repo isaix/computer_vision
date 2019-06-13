@@ -7,17 +7,18 @@ import java.util.Map.Entry;
 import java.util.Stack;
 import org.opencv.core.*;
 
+import Algorithm.Move;
+
 
 public class AlgorithmController {
 
-	static public ArrayList<Integer> order;
-
-	public static ArrayList<Node> ConvertToGraph(ArrayList<Point> points) {
+	public static ArrayList<Node> ConvertToGraph(ArrayList<Point> points, Point car) {
 
 		int number = 0;
 		ArrayList<Node> nodes = new ArrayList<Node>();
+		nodes.add(new Node(0, (int)car.x, (int)car.y ));
 		for(int i = 0; i < points.size(); i++) {
-			nodes.add(new Node(i, (int)points.get(i).x, (int)points.get(i).y));
+			nodes.add(new Node(i+1, (int)points.get(i).x, (int)points.get(i).y));
 		}
 		
 		/*
@@ -85,10 +86,7 @@ public class AlgorithmController {
 
 	//Performs a DFS and returns a list holding the order in which the nodes were visited
 	public static ArrayList<Integer> performDFS(ArrayList<Node> graph, Node node){
-		if(order == null) {
-			order = new ArrayList<Integer>();
-		}
-		
+		ArrayList<Integer> order = new ArrayList<Integer>();
 		order.add(node.getNumber());
 		HashMap<Integer, Double> distances = node.getDistances();
 		for(Entry<Integer, Double> entry : distances.entrySet()) {
@@ -102,7 +100,7 @@ public class AlgorithmController {
 	}
 	
 	//Calculate the move needed to move from current position to next ball
-	public static Move calculateMove(ArrayList<Node> graph, int fromIndex, int toIndex) {
+	public static Move calculateMove(ArrayList<Node> graph, int fromIndex, int toIndex, double carAngle) {
 		Move move = new Move();
 		Node from = graph.get(fromIndex);
 		Node to = graph.get(toIndex);
@@ -111,9 +109,18 @@ public class AlgorithmController {
 		int b = Math.abs(to.getY() - from.getY());
 		move.setDistance(dist);
 		double cosC = (Math.pow(a, 2) + Math.pow(dist, 2) - Math.pow(b, 2))/(2*a*dist);
-		move.setAngle(Math.toDegrees(Math.acos(cosC)));
+		move.setAngle((90 - carAngle) + Math.toDegrees(Math.acos(cosC)));
 		
 		return move;
+	}
+	
+	public static double calculateCarAngle(ArrayList<Point> car) {
+		Point middlePoint = new Point((car.get(1).x + car.get(2).x)/2, (car.get(1).y + car.get(2).y)/2);
+		double a = car.get(0).x - middlePoint.x;
+		double b = car.get(0).y - middlePoint.y;
+		double dist = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+		double cosC = (Math.pow(a, 2) + Math.pow(dist, 2) - Math.pow(b, 2))/(2*a*dist);
+		return Math.toDegrees(Math.acos(cosC));
 	}
 	
 	public static void resetOrder(){
