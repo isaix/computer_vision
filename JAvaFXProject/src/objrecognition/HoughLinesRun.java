@@ -1,8 +1,6 @@
 package objrecognition;
 
 
-import java.util.ArrayList;
-
 import org.opencv.core.*;
 import org.opencv.core.Point;
 import org.opencv.highgui.HighGui;
@@ -14,7 +12,6 @@ class HoughLinesRun {
         // Declare the output variables
         Mat dst = new Mat(), cdst = new Mat(), cdstP;
 
-<<<<<<< HEAD
         // Check if image is loaded fine
 //        if( frame.empty() ) {
 //            System.out.println("Error opening image!");
@@ -24,17 +21,11 @@ class HoughLinesRun {
 //        }
         
         //! [edge_detection]
-=======
->>>>>>> branch 'master' of https://github.com/isaix/computer_vision.git
         // Edge detection
-<<<<<<< HEAD
         //Imgproc.Canny(frame, dst, 50, 200, 3, false);
         //Imgproc.Canny(frame, dst, 100, 800, 3, false); meget bred
         Imgproc.Canny(frame, dst, 200, 500, 3, false);
         //! [edge_detection]
-=======
-        Imgproc.Canny(frame, dst, 80, 150, 3, false);
->>>>>>> branch 'master' of https://github.com/isaix/computer_vision.git
 
         // Copy edges to the images that will display the results in BGR
         Imgproc.cvtColor(dst, cdst, Imgproc.COLOR_GRAY2BGR);
@@ -44,6 +35,8 @@ class HoughLinesRun {
         // Standard Hough Line Transform
         Mat lines = new Mat(); // will hold the results of the detection
         Imgproc.HoughLines(dst, lines, 1, Math.PI/180, 150); // runs the actual detection
+        //! [hough_lines]
+        //! [draw_lines]
         // Draw the lines
         for (int x = 0; x < lines.rows(); x++) {
             double rho = lines.get(x, 0)[0],
@@ -53,34 +46,32 @@ class HoughLinesRun {
             double x0 = a*rho, y0 = b*rho;
             Point pt1 = new Point(Math.round(x0 + 1000*(-b)), Math.round(y0 + 1000*(a)));
             Point pt2 = new Point(Math.round(x0 - 1000*(-b)), Math.round(y0 - 1000*(a)));
-            //Imgproc.line(cdst, pt1, pt2, new Scalar(0, 0, 255), 3, Imgproc.LINE_AA, 0);
-            Imgproc.line(cdst, pt1, pt2, new Scalar(103, 247, 12), 3, Imgproc.LINE_AA, 0);
-                     
+            Imgproc.line(cdst, pt1, pt2, new Scalar(0, 0, 255), 3, Imgproc.LINE_AA, 0);
         }
-        
 
         // Probabilistic Line Transform
         Mat linesP = new Mat(); // will hold the results of the detection
-        // GAMMEL Imgproc.HoughLinesP(dst, linesP, 1, Math.PI/180, 50, 50, 10); // runs the actual detection
-        Imgproc.HoughLinesP(dst, linesP, 1, Math.PI/180, 50, 50, 30); // runs the actual detection
+        Imgproc.HoughLinesP(dst, linesP, 1, Math.PI/180, 50, 50, 10); // runs the actual detection
+        //! [hough_lines_p]
+        //! [draw_lines_p]
         // Draw the lines
-        ArrayList<Point> coordinatArray = new ArrayList<>();
         for (int x = 0; x < linesP.rows(); x++) {
             double[] l = linesP.get(x, 0);
-            //Imgproc.line(frame, new Point(l[0], l[1]), new Point(l[2], l[3]), new Scalar(0, 0, 255), 3, Imgproc.LINE_AA, 0);
-            Imgproc.line(frame, new Point(l[0], l[1]), new Point(l[2], l[3]), new Scalar(103, 247, 12), 3, Imgproc.LINE_AA, 0);
-            coordinatArray.add(new Point(l[0], l[1]));
-            coordinatArray.add(new Point (l[2], l[3]));
-            System.out.println("Punkt et " + l[0] + " og " + l[1]);            
-            System.out.println("Punkt to " + l[2] + " og " + l[3]);
+            Imgproc.line(frame, new Point(l[0], l[1]), new Point(l[2], l[3]), new Scalar(0, 0, 255), 3, Imgproc.LINE_AA, 0);
         }
-        
-       
-        
+           
+//        // Show results
+//        HighGui.imshow("Source", frame);
+//        HighGui.imshow("Detected Lines (in red) - Standard Hough Line Transform", cdst);
+//        HighGui.imshow("Detected Lines (in red) - Probabilistic Line Transform", cdstP);
+//       
+//        // Wait and Exit
+//        HighGui.waitKey();
+//        System.exit(0);
+
         
 		return frame;
        
     }
-    
    
 }

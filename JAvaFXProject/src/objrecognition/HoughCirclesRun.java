@@ -112,7 +112,7 @@ public class HoughCirclesRun {
 
 
 
-		if(counter%frameDelay ==0) {
+		if(counter%frameDelay == 0) {
 
 
 			if (ballCoordinates.isEmpty() && !foundCoordinates.isEmpty()) {
@@ -124,9 +124,13 @@ public class HoughCirclesRun {
 				
 				System.out.println("change");
 
-				ballCoordinates.clear();
-				ballCoordinates.addAll(foundCoordinates);
+				
 				//ballCoordinates = foundCoordinates; 
+				
+				if(!(ballCoordinates.size() == foundCoordinates.size())) {
+					ballCoordinates.clear();
+					ballCoordinates.addAll(foundCoordinates);
+				}
 
 			} else {
 				if (ballCoordinates.size() > foundCoordinates.size()) {
