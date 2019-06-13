@@ -95,12 +95,9 @@ public class Car {
 		}
 		
 		
-		
-		System.out.println("before clear : "+ carPoints);
-
+	
 
 		carPoints.clear();
-		System.out.println("after clear : "+ carPoints);
 
 
 

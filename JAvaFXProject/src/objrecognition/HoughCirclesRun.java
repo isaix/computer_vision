@@ -114,19 +114,15 @@ public class HoughCirclesRun {
 
 		if(counter%frameDelay ==0) {
 
-			System.out.println("about to compare array and they look like this: ".toUpperCase());
-			System.out.println("ballCoordinates: " + ballCoordinates);
-			System.out.println("foundCoordinates: " + foundCoordinates);
-
 
 			if (ballCoordinates.isEmpty() && !foundCoordinates.isEmpty()) {
-				System.out.println("changes registered 1");
-				System.out.println("should be clear : "+ ballCoordinates);
-
+				
+				System.out.println("change");
 
 				ballCoordinates.addAll(foundCoordinates);
 			} else if (!ballCoordinates.containsAll(foundCoordinates)) {
-				System.out.println("changes registered 2");
+				
+				System.out.println("change");
 
 				ballCoordinates.clear();
 				ballCoordinates.addAll(foundCoordinates);
@@ -140,6 +136,7 @@ public class HoughCirclesRun {
 					System.out.println(foundCoordinates);
 					ballCoordinates.clear();
 				}
+				
 			}
 
 			System.out.println("\n found balls: " + ballCoordinates.size());
@@ -153,14 +150,6 @@ public class HoughCirclesRun {
 		}
 
 
-
-
-
-
-		//System.out.println("before clear : "+ foundCoordinates);
-
-
-		//System.out.println("after clear : "+ foundCoordinates);
 		if(counter%frameDelay == 0) {
 			counter++;
 			return frame;
