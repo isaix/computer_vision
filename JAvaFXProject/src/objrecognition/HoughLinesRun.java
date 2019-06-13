@@ -14,8 +14,27 @@ class HoughLinesRun {
         // Declare the output variables
         Mat dst = new Mat(), cdst = new Mat(), cdstP;
 
+<<<<<<< HEAD
+        // Check if image is loaded fine
+//        if( frame.empty() ) {
+//            System.out.println("Error opening image!");
+//            System.out.println("Program Arguments: [image_name -- default "
+//                 );
+//            System.exit(-1);
+//        }
+        
+        //! [edge_detection]
+=======
+>>>>>>> branch 'master' of https://github.com/isaix/computer_vision.git
         // Edge detection
+<<<<<<< HEAD
+        //Imgproc.Canny(frame, dst, 50, 200, 3, false);
+        //Imgproc.Canny(frame, dst, 100, 800, 3, false); meget bred
+        Imgproc.Canny(frame, dst, 200, 500, 3, false);
+        //! [edge_detection]
+=======
         Imgproc.Canny(frame, dst, 80, 150, 3, false);
+>>>>>>> branch 'master' of https://github.com/isaix/computer_vision.git
 
         // Copy edges to the images that will display the results in BGR
         Imgproc.cvtColor(dst, cdst, Imgproc.COLOR_GRAY2BGR);
