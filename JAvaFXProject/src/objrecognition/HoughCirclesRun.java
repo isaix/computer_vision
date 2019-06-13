@@ -17,7 +17,7 @@ import java.util.logging.SimpleFormatter;
 public class HoughCirclesRun {
 
 	int counter = 0;
-	int frameDelay = 30;
+	int frameDelay = 10;
 
 	double tolerance = 10.0;
 	
@@ -26,12 +26,12 @@ public class HoughCirclesRun {
 	Mat circles;
 
 	ArrayList<Point> ballCoordinates = new ArrayList<Point>();
-	static ArrayList<Point> validCoordinates = new ArrayList<Point>();	
+	static ArrayList<Point> validBallCoordinates = new ArrayList<Point>();	
 	ArrayList<Point> foundCoordinates = new ArrayList<Point>();	
 	
 	
-	static public ArrayList<Point> getValidCoordinates(){
-		return validCoordinates;
+	static public ArrayList<Point> getvalidBallCoordinates(){
+		return validBallCoordinates;
 	}
 
 
@@ -72,6 +72,10 @@ public class HoughCirclesRun {
 
 
 			Boolean found = false;
+			
+//			if(foundCoordinates.size() > 10) {
+//				foundCoordinates.clear();
+//			}
 
 			for (Point coordinates : foundCoordinates) {
 				if ((coordinates.x - tolerance < center.x && center.x < coordinates.x + tolerance) && (coordinates.y - tolerance < center.y && center.y < coordinates.y + tolerance)) {
@@ -174,17 +178,17 @@ public class HoughCirclesRun {
 				boolean similar = false;
 				
 				for (Point ballCoordinate : ballCoordinates) {
-					for (Point validCoordinate : validCoordinates) {
+					for (Point validBallCoordinate : validBallCoordinates) {
 						similar = false;
-						if ((ballCoordinate.x - tolerance < validCoordinate.x && validCoordinate.x < ballCoordinate.x + tolerance) && (ballCoordinate.y - tolerance < validCoordinate.y && validCoordinate.y < ballCoordinate.y + tolerance)) {
+						if ((ballCoordinate.x - tolerance < validBallCoordinate.x && validBallCoordinate.x < ballCoordinate.x + tolerance) && (ballCoordinate.y - tolerance < validBallCoordinate.y && validBallCoordinate.y < ballCoordinate.y + tolerance)) {
 							similar = true;
 							break;
 						}
 					}
 					if(!similar) {
 						System.out.println("a new valid array");
-						validCoordinates.clear();
-						validCoordinates.addAll(ballCoordinates);
+						validBallCoordinates.clear();
+						validBallCoordinates.addAll(ballCoordinates);
 						validCount = 0;
 						//System.out.println("valid count reset");
 						break;
@@ -199,6 +203,9 @@ public class HoughCirclesRun {
 
 
 		}
+		
+		
+		
 
 
 		if(counter%frameDelay == 0) {
