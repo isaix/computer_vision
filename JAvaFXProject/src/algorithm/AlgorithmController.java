@@ -104,8 +104,6 @@ public class AlgorithmController {
 		Move move = new Move();
 		Point middlePoint = new Point((car.get(1).x + car.get(2).x)/2,(car.get(1).y - car.get(2).y)/2);
 		
-		//
-		
 		Node A = new Node((int)car.get(0).x, (int)car.get(0).y);
 		
 		Node B = new Node((int) middlePoint.x, (int) middlePoint.y);
