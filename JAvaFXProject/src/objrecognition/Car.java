@@ -10,7 +10,7 @@ import org.opencv.imgproc.Imgproc;
 public class Car {
 
 	int counter = 0;
-	int frameDelay = 50;
+	int frameDelay = 5;
 
 	double tolerance = 10.0;
 
@@ -24,7 +24,10 @@ public class Car {
 
 
 	static public ArrayList<Point> getvalidCarCoordinates(){
-		return validCarCoordinates;
+		ArrayList<Point> temp = new ArrayList<Point>();	
+		temp.addAll(validCarCoordinates);
+		validCarCoordinates.clear();
+		return temp;
 	}
 
 
@@ -96,7 +99,7 @@ public class Car {
 				//System.out.println("radius: " +radius );
 
 				//System.out.println("in frame: " + frame);
-				Imgproc.circle(frame, center, radius, new Scalar(255,0,255), 3, 8, 0 );
+				Imgproc.circle(frame, center, radius, new Scalar(0,191,255), 3, 8, 0 );
 			}
 
 		}
@@ -118,14 +121,14 @@ public class Car {
 
 			if (carCoordinates.isEmpty() && !foundCoordinates.isEmpty()) {
 
-				System.out.println("change");
+//				System.out.println("change");
 
 				carCoordinates.addAll(foundCoordinates);
 
 			} else {
 
 				if(!(carCoordinates.size() == foundCoordinates.size())) {
-					System.out.println("change, new size");
+//					System.out.println("change, new size");
 					carCoordinates.clear();
 					carCoordinates.addAll(foundCoordinates);
 				} else {
@@ -140,28 +143,23 @@ public class Car {
 							}
 						}
 						if(!similar) {
-							System.out.println("change, not similar");
+//							System.out.println("change, not similar");
 							carCoordinates.clear();
 							carCoordinates.addAll(foundCoordinates);
 							validCount = 0;
-							System.out.println("valid count reset");
+//							System.out.println("valid count reset");
 							break;
 						} 
 					}
 					if (similar) {
 						validCount++;
-						System.out.println("valid incremented: " + validCount);
+//						System.out.println("valid incremented: " + validCount);
 					}
 
 				}
 
 			} 
-			//			
 
-			System.out.println("\n found balls: " + carCoordinates.size());
-			System.out.println("and the coordinates are: " + carCoordinates);
-
-			System.out.println("END \n");
 
 
 			foundCoordinates.clear();
@@ -179,19 +177,21 @@ public class Car {
 						}
 					}
 					if(!similar) {
-						System.out.println("a new valid array");
+//						System.out.println("a new valid array");
 						validCarCoordinates.clear();
-						System.out.println("unsorted Coordinates: " + carCoordinates);
+//						System.out.println("unsorted Coordinates: " + carCoordinates);
 
 						validCarCoordinates.addAll(comparePoints(carCoordinates.get(0), carCoordinates.get(1), carCoordinates.get(2)));
 						validCount = 0;
-						System.out.println("sorted Coordinates: " + validCarCoordinates);
+						System.out.println("valid car coordinates: " + validCarCoordinates);
 						break;
 					} 
 				}
 				if (similar) {
 					System.out.println("valid array is still the same");
 				}
+				
+//				System.out.println("car part 0.5: " + validCarCoordinates);
 
 				validCount = 0;
 			}

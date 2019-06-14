@@ -2,6 +2,7 @@ package objrecognition;
 
 import org.opencv.core.Core;
 
+import carConnection.SocketRunnable;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
@@ -57,7 +58,18 @@ public class ObjRecognition extends Application
 		nu.pattern.OpenCV.loadShared();
 		
 		
+		Runnable runnable = new SocketRunnable();
+		
+		Thread thread = new Thread(runnable);
+		
+		thread.start();
+		
+
+		
+		
 		launch(args);
+		
+		System.out.println("heeej");
 	}
 }
 

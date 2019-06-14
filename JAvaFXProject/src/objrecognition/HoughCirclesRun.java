@@ -17,7 +17,7 @@ import java.util.logging.SimpleFormatter;
 public class HoughCirclesRun {
 
 	int counter = 0;
-	int frameDelay = 10;
+	int frameDelay = 15;
 
 	double tolerance = 10.0;
 	
@@ -125,14 +125,14 @@ public class HoughCirclesRun {
 
 			if (ballCoordinates.isEmpty() && !foundCoordinates.isEmpty()) {
 				
-				System.out.println("change");
+//				System.out.println("change");
 
 				ballCoordinates.addAll(foundCoordinates);
 			
 			} else {
 								
 				if(!(ballCoordinates.size() == foundCoordinates.size())) {
-					System.out.println("change, new size");
+//					System.out.println("change, new size");
 					ballCoordinates.clear();
 					ballCoordinates.addAll(foundCoordinates);
 				} else {
@@ -147,17 +147,17 @@ public class HoughCirclesRun {
 							}
 						}
 						if(!similar) {
-							System.out.println("change, not similar");
+//							System.out.println("change, not similar");
 							ballCoordinates.clear();
 							ballCoordinates.addAll(foundCoordinates);
 							validCount = 0;
-							System.out.println("valid count reset");
+//							System.out.println("valid count reset");
 							break;
 						} 
 					}
 					if (similar) {
 						validCount++;
-						System.out.println("valid incremented: " + validCount);
+//						System.out.println("valid incremented: " + validCount);
 					}
 					
 				}
@@ -166,9 +166,9 @@ public class HoughCirclesRun {
 //			
 
 			System.out.println("\n found balls: " + ballCoordinates.size());
-			System.out.println("and the coordinates are: " + ballCoordinates);
-
-			System.out.println("END \n");
+//			System.out.println("and the coordinates are: " + ballCoordinates);
+//
+//			System.out.println("END \n");
 
 
 			foundCoordinates.clear();
@@ -189,6 +189,7 @@ public class HoughCirclesRun {
 						System.out.println("a new valid array");
 						validBallCoordinates.clear();
 						validBallCoordinates.addAll(ballCoordinates);
+
 						validCount = 0;
 						//System.out.println("valid count reset");
 						break;
