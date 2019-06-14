@@ -116,6 +116,13 @@ public class AlgorithmController {
 		Node B = new Node((int) middlePoint.x, (int) middlePoint.y);
 		
 		Node to = graph.get(toIndex);
+		//Code to figure out if car should turn left or right
+		double camper = (car.get(0).y - middlePoint.y)/(car.get(0).x - middlePoint.x);
+		double intersection = middlePoint.y - camper * middlePoint.x;
+		double lineY = camper * to.getX() + intersection;
+		
+		
+		
 		double dist = calculateDistance(B, to);
 		
 		double a = dist;
@@ -125,6 +132,12 @@ public class AlgorithmController {
 		move.setDistance(dist);
 		double cosC = (Math.pow(a, 2) + Math.pow(c, 2) - Math.pow(b, 2))/(2*a*c);
 		move.setAngle(Math.toDegrees(Math.acos(cosC)));
+		if(lineY < to.getY()) {
+			move.setAngle(-move.getAngle());
+		}
+		if(car.get(0).x > middlePoint.x) {
+			move.setAngle(-move.getAngle());
+		}
 		
 		return move;
 	}
