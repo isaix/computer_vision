@@ -130,6 +130,8 @@ public class AlgorithmController {
 		double c = calculateDistance(A, B);
 		
 		move.setDistance(dist);
+		
+		/*
 		double cosC = (Math.pow(a, 2) + Math.pow(c, 2) - Math.pow(b, 2))/(2*a*c);
 		move.setAngle(Math.toDegrees(Math.acos(cosC)));
 		if(lineY < to.getY()) {
@@ -138,8 +140,28 @@ public class AlgorithmController {
 		if(car.get(0).x > middlePoint.x) {
 			move.setAngle(-move.getAngle());
 		}
+		*/
+		
+		double slope1 = calculateSlope(B.getX(), A.getX(), B.getY(), A.getY());
+		double slope2 = calculateSlope(to.getX(), B.getX(), to.getY(), B.getY());
+		
+		double angle = calculateAngleOfLines(slope1, slope2);
+		move.setAngle(angle);
 		
 		return move;
+	}
+	
+	public static double calculateAngleOfLines(double a1, double a2) {
+		
+		double angle = 180 - Math.abs(Math.atan(a1) - Math.atan(a2));
+		
+		return angle;
+	}
+	
+	public static double calculateSlope(double x1, double x2, double y1, double y2) {
+		
+		double a = (y2 - y1)/(x2 - x1);
+		return a;
 	}
 	
 	public static double calculateCarAngle(ArrayList<Point> car) {
