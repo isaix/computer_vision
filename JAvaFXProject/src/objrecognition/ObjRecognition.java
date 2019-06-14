@@ -57,13 +57,13 @@ public class ObjRecognition extends Application
 		// load the native OpenCV library
 		nu.pattern.OpenCV.loadShared();
 		
-		/*
+		
 		Runnable runnable = new SocketRunnable();
 		
 		Thread thread = new Thread(runnable);
 		
 		thread.start();
-		*/
+		
 
 		
 		

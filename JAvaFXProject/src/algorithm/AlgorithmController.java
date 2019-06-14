@@ -11,10 +11,11 @@ import algorithm.Move;
 
 
 public class AlgorithmController {
+	
+	static ArrayList<Integer> order;
 
 	public static ArrayList<Node> ConvertToGraph(ArrayList<Point> points, Point car) {
 
-		int number = 0;
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		nodes.add(new Node(0, (int)car.x, (int)car.y ));
 		for(int i = 0; i < points.size(); i++) {
@@ -86,7 +87,9 @@ public class AlgorithmController {
 
 	//Performs a DFS and returns a list holding the order in which the nodes were visited
 	public static ArrayList<Integer> performDFS(ArrayList<Node> graph, Node node){
-		ArrayList<Integer> order = new ArrayList<Integer>();
+		if(order == null) {
+		order = new ArrayList<Integer>();
+		}
 		order.add(node.getNumber());
 		HashMap<Integer, Double> distances = node.getDistances();
 		for(Entry<Integer, Double> entry : distances.entrySet()) {
@@ -97,6 +100,10 @@ public class AlgorithmController {
 		//order.add(node.getNumber());
 		
 		return order;
+	}
+	
+	public static void resetOrder() {
+		order = new ArrayList<Integer>();
 	}
 	
 	//Calculate the move needed to move from current position to next ball

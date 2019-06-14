@@ -29,19 +29,45 @@ public class SocketRunnable implements Runnable{
 		while(connected) {
 			
 			
+			
 			ArrayList<Point> points = HoughCirclesRun.getvalidBallCoordinates();
-			if(points == null) {
+			if(points == null || points.isEmpty()) {
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				continue;
+			}
+			System.out.println("points: " + points.size());
+
+			ArrayList<Point> car = Car.getvalidCarCoordinates();
+			
+			System.out.println("car: " + car.size());
+
+			if(car == null || car.isEmpty()) {
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				continue;
 			}
 			
-			ArrayList<Point> car = Car.getvalidCarCoordinates();
-			
 			ArrayList<Node> nodes = AlgorithmController.ConvertToGraph(points, car.get(0));
 			nodes = AlgorithmController.convertToMST(nodes, nodes.get(0));
+			for (Node node : nodes) {
+				System.out.println("all nodes: " + node.getX()+ ","+node.getY());
+			}
 			ArrayList<Integer> moves = AlgorithmController.performDFS(nodes, nodes.get(0));
 			Move move = AlgorithmController.calculateMove(nodes, car, moves.get(1));
+			System.out.println("move: " + nodes.get(moves.get(1)).getX() + ", " + nodes.get(moves.get(1)).getY());
+			System.out.println("angle: " + move.getAngle());
 			
 			String resp = client.sendMove(move);
+			move = null;
 						
 			if(resp.toLowerCase().equals("done")) {
 				client.stopConnection();
