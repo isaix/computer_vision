@@ -9,6 +9,7 @@ import algorithm.AlgorithmController;
 import algorithm.Move;
 import algorithm.Node;
 import objrecognition.Car;
+import objrecognition.ColorDetector;
 import objrecognition.HoughCirclesRun;
 
 public class SocketRunnable implements Runnable{
@@ -19,14 +20,31 @@ public class SocketRunnable implements Runnable{
 		SocketClient client = new SocketClient();
 		client.startConnection("192.168.43.174", 6666);
 		
+		
 		boolean connected = true; 
 		
 		int i = 0; 
-		
+
+			
 		//Move[] moves = new Move[] {new Move(30, 90), new Move(30, 90), new Move(30, 90), new Move(30, 90)};
 		
 		
 		while(connected) {
+			
+			/*
+			try {
+				ArrayList<Point> foundWalls2 = ColorDetector.run();
+			} catch(Exception e){
+				System.out.println("Intet frame, start kameraet.");				
+			}
+			
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			*/
 			
 			ArrayList<Point> points = HoughCirclesRun.getvalidBallCoordinates();
 			if(points == null || points.isEmpty()) {

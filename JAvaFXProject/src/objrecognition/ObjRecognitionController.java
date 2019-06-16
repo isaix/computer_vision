@@ -35,7 +35,6 @@ public class ObjRecognitionController
 	@FXML
 	private ImageView originalFrame;
 	
-	
 	// a timer for acquiring the video stream
 	private ScheduledExecutorService timer;
 	// the OpenCV object that performs the video capture
@@ -43,10 +42,14 @@ public class ObjRecognitionController
 	// a flag to change the button behavior
 	private boolean cameraActive;
 	
+	static Mat latestFrame;
+	
 	private HoughCirclesRun houghCirclesRun = new HoughCirclesRun();
-	private HoughLinesRun houghLinesRun = new HoughLinesRun();
-	private ColorDetector color = new ColorDetector();
+	private HoughLinesRun houghLinesRun = new HoughLinesRun();	
 	private Car car = new Car();
+	//private ColorDetector2 color2 = new ColorDetector2();
+	
+	
 	
 		
 	/**
@@ -82,7 +85,10 @@ public class ObjRecognitionController
 						//houghLinesRun.runLine(frame);
 						//houghCirclesRun.run(frame);
 						//car.run(frame);
-						color.detectColor(frame);
+						houghCirclesRun.run(frame);
+						car.run(frame);
+						//color2.run(frame);
+						
 						
 
 						// convert and show the frame
@@ -143,8 +149,12 @@ public class ObjRecognitionController
 				e.printStackTrace();
 			}
 		}
-		
+		latestFrame = frame;
 		return frame;
+	}
+	
+	static Mat getLatestFrame() {
+		return latestFrame;
 	}
 	
 	

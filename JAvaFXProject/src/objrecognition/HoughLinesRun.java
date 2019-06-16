@@ -9,12 +9,19 @@ import org.opencv.highgui.HighGui;
 import org.opencv.imgproc.Imgproc;
 
 class HoughLinesRun {
+	static double errormagin = 8.0;
+	int linecounter = 0;
+	int delay = 30;
+	
+	ArrayList<LineZ> foundLineCoord = new ArrayList<>();
+	ArrayList<LineZ> linecoord = new ArrayList<>();
+	
 
     public Mat runLine(Mat frame) {
         Mat dst = new Mat(), cdst = new Mat(), cdstP;
         
         Imgproc.Canny(frame, dst, 200, 500, 3, false);
-        Imgproc.Canny(frame, dst, 80, 150, 3, false);
+        //Imgproc.Canny(frame, dst, 80, 150, 3, false);
 
 
         // Copy edges to the images that will display the results in BGR
@@ -55,6 +62,17 @@ class HoughLinesRun {
            // System.out.println("Punkt to " + l[2] + " og " + l[3]);
                    
         }
+//        
+//        boolean linefound = false;
+//        
+//        for(LineZ coordinates : foundLineCoord ) {
+//        	
+//        }
+//        
+//        
+//        
+
+        
           
 		return frame;
        
