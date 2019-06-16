@@ -14,7 +14,7 @@ public class AlgorithmController {
 	
 	static ArrayList<Integer> order;
 
-	public static ArrayList<Node> ConvertToGraph(ArrayList<Point> points, Point car) {
+	public static ArrayList<Node> ConvertToGraph(ArrayList<Point> points, Point car, ArrayList<Point> walls) {
 
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		nodes.add(new Node(0, (int)car.x, (int)car.y ));
@@ -22,17 +22,6 @@ public class AlgorithmController {
 			nodes.add(new Node(i+1, (int)points.get(i).x, (int)points.get(i).y));
 		}
 		
-		/*
-		for(int i = 0; i < matrix.length; i++) {
-			for(int j = 0; j < matrix[i].length; j++) {
-				if(matrix[i][j] == 1) {
-					nodes.add(new Node(number, j, i));
-					number++;
-				}
-			}
-		}
-		*/
-
 		for(int i = 0; i < nodes.size(); i++) {
 			Node from = nodes.get(i);
 			for(int j = i+1; j < nodes.size(); j++) {
@@ -83,6 +72,19 @@ public class AlgorithmController {
 		}
 
 		return mstFinal;
+	}
+	public static int findNearestBall(ArrayList<Node> graph) {
+		Node car = graph.get(0);
+		double shortestDistance = Double.MAX_VALUE;
+		int shortestBall = -1;
+		for(Entry<Integer, Double> entry : car.getDistances().entrySet()) {
+			if(entry.getValue() < shortestDistance) {
+				shortestBall = entry.getKey();
+				shortestDistance = entry.getValue();
+			}
+		}
+		return shortestBall;
+		
 	}
 
 	//Performs a DFS and returns a list holding the order in which the nodes were visited

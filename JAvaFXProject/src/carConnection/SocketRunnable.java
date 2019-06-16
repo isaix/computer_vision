@@ -28,8 +28,6 @@ public class SocketRunnable implements Runnable{
 		
 		while(connected) {
 			
-			
-			
 			ArrayList<Point> points = HoughCirclesRun.getvalidBallCoordinates();
 			if(points == null || points.isEmpty()) {
 				try {
@@ -56,18 +54,22 @@ public class SocketRunnable implements Runnable{
 				continue;
 			}
 			
-			ArrayList<Node> nodes = AlgorithmController.ConvertToGraph(points, car.get(0));
-			nodes = AlgorithmController.convertToMST(nodes, nodes.get(0));
+			ArrayList<Node> nodes = AlgorithmController.ConvertToGraph(points, car.get(0), null);
+			//nodes = AlgorithmController.convertToMST(nodes, nodes.get(0));
 			for (Node node : nodes) {
 				System.out.println("all nodes: " + node.getX()+ ","+node.getY());
 			}
-			ArrayList<Integer> moves = AlgorithmController.performDFS(nodes, nodes.get(0));
-			Move move = AlgorithmController.calculateMove(nodes, car, moves.get(1));
-			System.out.println("move: " + nodes.get(moves.get(1)).getX() + ", " + nodes.get(moves.get(1)).getY());
+			int nearestBall = AlgorithmController.findNearestBall(nodes);
+			
+			//ArrayList<Integer> moves = AlgorithmController.performDFS(nodes, nodes.get(0));
+			Move move = AlgorithmController.calculateMove(nodes, car, nearestBall);
+			System.out.println("move: " + nodes.get(nearestBall).getX() + ", " + nodes.get(nearestBall).getY());
 			System.out.println("angle: " + move.getAngle());
 			
 			String resp = client.sendMove(move);
 			move = null;
+			points.clear();
+			car.clear();
 						
 			if(resp.toLowerCase().equals("done")) {
 				client.stopConnection();
