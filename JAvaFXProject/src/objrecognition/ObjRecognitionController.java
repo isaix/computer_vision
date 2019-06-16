@@ -45,8 +45,7 @@ public class ObjRecognitionController
 	static Mat latestFrame;
 	
 	private HoughCirclesRun houghCirclesRun = new HoughCirclesRun();
-	private HoughLinesRun houghLinesRun = new HoughLinesRun();
-	
+	private HoughLinesRun houghLinesRun = new HoughLinesRun();	
 	private Car car = new Car();
 	//private ColorDetector2 color2 = new ColorDetector2();
 	
@@ -86,7 +85,6 @@ public class ObjRecognitionController
 						//houghLinesRun.runLine(frame);
 						houghCirclesRun.run(frame);
 						car.run(frame);
-						//ColorDetector.run();
 						//color2.run(frame);
 						
 						

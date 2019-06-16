@@ -31,14 +31,19 @@ public class SocketRunnable implements Runnable{
 		
 		while(connected) {
 			
+			
 			try {
 				ArrayList<Point> foundWalls2 = ColorDetector.run();
-				System.out.println(foundWalls2);
 			} catch(Exception e){
-				System.out.println("Hov! Den fejlede! ");
-				
+				System.out.println("Intet frame, start kameraet.");				
 			}
 			
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
 			
 			ArrayList<Point> points = HoughCirclesRun.getvalidBallCoordinates();

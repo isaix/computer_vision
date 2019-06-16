@@ -19,7 +19,6 @@ public class ColorDetector {
 	public static ArrayList<Point> run() {
 
 		Mat frame = ObjRecognitionController.getLatestFrame();
-		
 		Mat blurImg = new Mat();
 		Mat hsvImage = new Mat();
 		Mat color_range_red_dark = new Mat();
@@ -40,32 +39,22 @@ public class ColorDetector {
 
 		//applying bitwise or to detect red.
 		Core.bitwise_or(color_range_red_dark, color_range_red_light, frame);
-		//Mat locations = new Mat();
-		//Core.findNonZero(frame, locations);
-		
-//		System.out.print(frame.cols());
-//		System.out.print(frame.rows());
+
 		for(int i = 0; i < frame.rows(); i++) {
 			for(int j = 0; j < frame.cols(); j++) {
 				double[] returned = frame.get(i, j);
 				int value = (int) returned[0];
 				if(value == 255) {
 					//System.out.println("x: " + i + "\ty: " + j);
-					foundWalls.add(new Point(returned[i],returned[j]));
+					foundWalls.add(new Point(i,j));
 				}
 			}
 		}
 		
-		//Core.findNonZero(frame, whitePoints);
 		
-		
-		
-//		
-		
-	//	System.out.println("\nframe: " + frame);
-		//System.out.println("whitePoints: " + whitePoints);
-		
-		System.out.println(foundWalls);
+		//System.out.println(foundWalls);
+//		System.out.println(foundWalls.size());
+//		System.out.println(foundWalls);
 	
 		return foundWalls;
 	        
