@@ -9,6 +9,7 @@ import algorithm.AlgorithmController;
 import algorithm.Move;
 import algorithm.Node;
 import objrecognition.Car;
+import objrecognition.ColorDetector;
 import objrecognition.HoughCirclesRun;
 
 public class SocketRunnable implements Runnable{
@@ -19,14 +20,24 @@ public class SocketRunnable implements Runnable{
 		SocketClient client = new SocketClient();
 		client.startConnection("192.168.43.174", 6666);
 		
+		
 		boolean connected = true; 
 		
 		int i = 0; 
-		
+
+			
 		//Move[] moves = new Move[] {new Move(30, 90), new Move(30, 90), new Move(30, 90), new Move(30, 90)};
 		
 		
 		while(connected) {
+			
+			try {
+				ArrayList<Point> foundWalls2 = ColorDetector.run();
+				System.out.println(foundWalls2);
+			} catch(Exception e){
+				System.out.println("Hov! Den fejlede! ");
+				
+			}
 			
 			
 			
