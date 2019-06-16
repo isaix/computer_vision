@@ -31,6 +31,7 @@ public class SocketRunnable implements Runnable{
 		
 		while(connected) {
 			
+<<<<<<< HEAD
 			/*
 			try {
 				ArrayList<Point> foundWalls2 = ColorDetector.run();
@@ -45,6 +46,22 @@ public class SocketRunnable implements Runnable{
 				e1.printStackTrace();
 			}
 			*/
+=======
+			
+//			try {
+//				ArrayList<Point> foundWalls2 = ColorDetector.run();
+//			} catch(Exception e){
+//				System.out.println("Intet frame, start kameraet.");				
+//			}
+//			
+//			try {
+//				Thread.sleep(2000);
+//			} catch (InterruptedException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//			
+>>>>>>> branch 'master' of https://github.com/isaix/computer_vision.git
 			
 			ArrayList<Point> points = HoughCirclesRun.getvalidBallCoordinates();
 			if(points == null || points.isEmpty()) {
