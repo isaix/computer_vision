@@ -45,6 +45,7 @@ public class ObjRecognitionController
 	
 	private HoughCirclesRun houghCirclesRun = new HoughCirclesRun();
 	private HoughLinesRun houghLinesRun = new HoughLinesRun();
+	private ColorDetector color = new ColorDetector();
 	private Car car = new Car();
 	
 		
@@ -63,7 +64,7 @@ public class ObjRecognitionController
 		if (!this.cameraActive)
 		{
 			// start the video capture
-			this.capture.open(1);
+			this.capture.open(0);
 			// is the video stream available?
 			if (this.capture.isOpened())
 			{
@@ -79,8 +80,9 @@ public class ObjRecognitionController
 						Mat frame = grabFrame();
 						
 						//houghLinesRun.runLine(frame);
-						houghCirclesRun.run(frame);
-						car.run(frame);
+						//houghCirclesRun.run(frame);
+						//car.run(frame);
+						color.detectColor(frame);
 						
 
 						// convert and show the frame
