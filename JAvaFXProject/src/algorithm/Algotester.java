@@ -11,6 +11,11 @@ public class Algotester {
 		for(Point point : points) {
 			System.out.println("X:" + point.x + " Y:" + point.y);
 		}
+		
+		Vector v1 = new Vector(5,-7);
+		Vector v2 = v1.getNormalizedVector();
+		System.out.println(v2.getX() + " " + v2.getY());
+		
 	}
 
 }

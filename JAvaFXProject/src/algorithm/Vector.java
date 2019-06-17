@@ -42,5 +42,19 @@ public class Vector {
 	public double crossProduct(Vector otherVector) {
 		return this.x*otherVector.y - this.y*otherVector.x;
 	}
+	
+	public Vector getNormalizedVector() {
+		double length = this.getLength();
+		return new Vector(x/length, y/length);
+	}
+	
+	public Vector getTværVector() {
+		return new Vector(-this.y, this.x);
+	}
+	
+	public Vector mulitply(double factor) {
+		return new Vector(x * factor, y * factor);
+	}
+	
 
 }

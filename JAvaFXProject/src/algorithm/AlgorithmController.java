@@ -24,25 +24,48 @@ public class AlgorithmController {
 
 		boolean possibleMove = true;
 		for(int i = 0; i < nodes.size(); i++) {
-			Node from = nodes.get(i);
+			Node to = nodes.get(i);
+			if(isPossibleMove(car, to, redPoints)) {
+				nodes.get(0).addDistance(i, calculateDistance(nodes.get(0), to));
+			}
+			/*
 			for(int j = i+1; j < nodes.size(); j++) {
 				Node to = nodes.get(j);
 				double dist = calculateDistance(from, to);
-
-				for(Point point : getPoints(20, to, from)) {
-					if(redPoints.contains(point)) {
-						possibleMove = false;
-					}
-				}
 				
-
-				if(possibleMove) {
+				if(isPossibleMove()) {
 					to.addDistance(from.getNumber(), dist);
 					from.addDistance(to.getNumber(), dist);
 				}
 			}
+			*/
 		}
 		return nodes;
+	}
+
+	private static boolean isPossibleMove(ArrayList<Point> car, Node to, ArrayList<Point> redPoints) {
+		int tolerance = 108;
+		Point middlePoint = new Point((car.get(1).x + car.get(2).x)/2, (car.get(1).y + car.get(2).y)/2);
+		Vector carVector = new Vector(middlePoint.x - car.get(0).x, middlePoint.y - car.get(0).y);
+		Vector tværVector = carVector.getTværVector().getNormalizedVector();
+		Vector edgeVector = tværVector.mulitply(108);
+		Node carNode1 = new Node(-1, (int) (car.get(0).x + edgeVector.getX()), (int) (car.get(0).y + edgeVector.getY()));
+		Node carNode2 = new Node(-1, (int) (car.get(0).x - edgeVector.getX()), (int) (car.get(0).y - edgeVector.getY()));
+		Node carMiddle = new Node(-1, (int)(car.get(0).x), (int)(car.get(0).y));
+		Node[] carnodes = {carNode1, carNode2, carMiddle};
+
+		Node ballNode1 = new Node(-1, (int)(to.getX() + edgeVector.getX()), (int)(to.getY() + edgeVector.getY()));
+		Node ballNode2 = new Node(-1, (int)(to.getX() - edgeVector.getX()), (int)(to.getY() - edgeVector.getY()));
+		Node[] ballnodes = {ballNode1, ballNode2, to};
+
+		for(int i = 0; i < carnodes.length; i++) {
+			for(Point point : getPoints(20, carnodes[i], ballnodes[i])) {
+				if(redPoints.contains(point)) {
+					return false;
+				}
+			}
+		}
+		return true;		
 	}
 
 	public static Point[] getPoints(int howManyPoints, Node node1, Node node2) {
@@ -185,21 +208,21 @@ public class AlgorithmController {
 		return move;
 	}
 
-	
+
 	public static Move calculateMoveButThisOneIsBetterBecauseWeUseVectors(ArrayList<Node> graph, ArrayList<Point> car, int toIndex) {
 		System.out.println(car.get(1).x);
 		System.out.println(car.get(2).x);
 		Point middlePoint = new Point((car.get(1).x + car.get(2).x)/2, (car.get(1).y + car.get(2).y)/2);
 		System.out.println("middle" + middlePoint.x + ", " + middlePoint.y);
 		Node ball = graph.get(toIndex);
-		
+
 		Vector carVector = new Vector(car.get(0).x - middlePoint.x, car.get(0).y - middlePoint.y);
 		System.out.println(carVector.getX() + ", " + carVector.getY());
 		Vector ballVector = new Vector(ball.getX() - middlePoint.x, ball.getY() - middlePoint.y);
 		System.out.println(ballVector.getX() + ", " + ballVector.getY());
 		double angle = carVector.calculateAngle(ballVector);
 		double length = calculateDistance(ball, new Node(-1, (int) middlePoint.x, (int) middlePoint.y));
-		
+
 		if(carVector.crossProduct(ballVector) > 0) {
 			angle = -angle;
 		}
@@ -208,9 +231,9 @@ public class AlgorithmController {
 		move.setDistance((length/777)*100-10);
 		System.out.println("DISTNACE: " + length);
 		return move;
-		
+
 	}
-	
+
 	public static double calculateAngleOfLines(double a1, double a2) {
 
 		double angle = 180 - Math.abs(Math.atan(a1) - Math.atan(a2));
