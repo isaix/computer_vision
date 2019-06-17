@@ -46,9 +46,8 @@ public class ObjRecognitionController
 	
 	private HoughCirclesRun houghCirclesRun = new HoughCirclesRun();
 	private HoughLinesRun houghLinesRun = new HoughLinesRun();	
-	private Car car = new Car();
-	//private ColorDetector2 color2 = new ColorDetector2();
-	
+	private ColorDetector cd = new ColorDetector();
+	private Car car = new Car();	
 	
 	
 		
@@ -83,13 +82,9 @@ public class ObjRecognitionController
 						Mat frame = grabFrame();
 						
 						//houghLinesRun.runLine(frame);
-						//houghCirclesRun.run(frame);
-						//car.run(frame);
 						houghCirclesRun.run(frame);
 						car.run(frame);
-						//color2.run(frame);
-						
-						
+						//cd.getColor(frame);
 
 						// convert and show the frame
 						Image imageToShow = Utils.mat2Image(frame);

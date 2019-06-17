@@ -185,6 +185,32 @@ public class AlgorithmController {
 		return move;
 	}
 
+	
+	public static Move calculateMoveButThisOneIsBetterBecauseWeUseVectors(ArrayList<Node> graph, ArrayList<Point> car, int toIndex) {
+		System.out.println(car.get(1).x);
+		System.out.println(car.get(2).x);
+		Point middlePoint = new Point((car.get(1).x + car.get(2).x)/2, (car.get(1).y + car.get(2).y)/2);
+		System.out.println("middle" + middlePoint.x + ", " + middlePoint.y);
+		Node ball = graph.get(toIndex);
+		
+		Vector carVector = new Vector(car.get(0).x - middlePoint.x, car.get(0).y - middlePoint.y);
+		System.out.println(carVector.getX() + ", " + carVector.getY());
+		Vector ballVector = new Vector(ball.getX() - middlePoint.x, ball.getY() - middlePoint.y);
+		System.out.println(ballVector.getX() + ", " + ballVector.getY());
+		double angle = carVector.calculateAngle(ballVector);
+		double length = calculateDistance(ball, new Node(-1, (int) car.get(0).x, (int) car.get(0).y));
+		
+		if(carVector.crossProduct(ballVector) > 0) {
+			angle = -angle;
+		}
+		Move move = new Move();
+		move.setAngle(angle);
+		move.setDistance((length/780)*100);
+		System.out.println("DISTNACE: " + length);
+		return move;
+		
+	}
+	
 	public static double calculateAngleOfLines(double a1, double a2) {
 
 		double angle = 180 - Math.abs(Math.atan(a1) - Math.atan(a2));
