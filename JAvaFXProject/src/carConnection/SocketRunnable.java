@@ -19,7 +19,7 @@ public class SocketRunnable implements Runnable{
 	public void run() {
 			
 		SocketClient client = new SocketClient();
-		client.startConnection("172.20.10.6", 6666);
+		client.startConnection("192.168.43.174", 6666);
 		
 		
 		boolean connected = true; 
@@ -28,23 +28,10 @@ public class SocketRunnable implements Runnable{
 
 			
 		//Move[] moves = new Move[] {new Move(30, 90), new Move(30, 90), new Move(30, 90), new Move(30, 90)};
-		
+		Move lastMove = null;
 		
 		while(connected) {
 			
-			try {
-				ArrayList<Point> foundWalls2 = ColorDetector.run();
-				System.out.println(foundWalls2.size());
-			} catch(Exception e){
-				System.out.println("Intet frame, start kameraet.");				
-			}
-			
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 			
 //			ArrayList<LineZ> lines = new ArrayList<>();
 //			try {
@@ -60,7 +47,7 @@ public class SocketRunnable implements Runnable{
 			ArrayList<Point> points = HoughCirclesRun.getvalidBallCoordinates();
 			if(points == null || points.isEmpty()) {
 				try {
-					Thread.sleep(2000);
+					Thread.sleep(500);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -75,13 +62,27 @@ public class SocketRunnable implements Runnable{
 
 			if(car == null || car.isEmpty()) {
 				try {
-					Thread.sleep(2000);
+					Thread.sleep(500);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				continue;
 			}
+			
+//			try {
+//				ArrayList<Point> foundWalls2 = ColorDetector.run();
+//				System.out.println(foundWalls2.size());
+//			} catch(Exception e){
+//				System.out.println("Intet frame, start kameraet.");				
+//			}
+//			
+//			try {
+//				Thread.sleep(2000);
+//			} catch (InterruptedException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
 			
 			ArrayList<Node> nodes = AlgorithmController.ConvertToGraph(points, car.get(0), null);
 			//nodes = AlgorithmController.convertToMST(nodes, nodes.get(0));
@@ -96,7 +97,13 @@ public class SocketRunnable implements Runnable{
 			System.out.println("move: " + nodes.get(nearestBall).getX() + ", " + nodes.get(nearestBall).getY());
 			System.out.println("angle: " + move.getAngle());
 			
+			if(move.equals(lastMove)) {
+				continue;
+			}
+			
 			String resp = client.sendMove(move);
+			
+			lastMove = move;
 			move = null;
 			points.clear();
 			car.clear();

@@ -198,14 +198,14 @@ public class AlgorithmController {
 		Vector ballVector = new Vector(ball.getX() - middlePoint.x, ball.getY() - middlePoint.y);
 		System.out.println(ballVector.getX() + ", " + ballVector.getY());
 		double angle = carVector.calculateAngle(ballVector);
-		double length = calculateDistance(ball, new Node(-1, (int) car.get(0).x, (int) car.get(0).y));
+		double length = calculateDistance(ball, new Node(-1, (int) middlePoint.x, (int) middlePoint.y));
 		
 		if(carVector.crossProduct(ballVector) > 0) {
 			angle = -angle;
 		}
 		Move move = new Move();
 		move.setAngle(angle);
-		move.setDistance((length/780)*100);
+		move.setDistance((length/777)*100-10);
 		System.out.println("DISTNACE: " + length);
 		return move;
 		
