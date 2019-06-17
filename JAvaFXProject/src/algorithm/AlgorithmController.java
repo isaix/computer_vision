@@ -11,28 +11,60 @@ import algorithm.Move;
 
 
 public class AlgorithmController {
-	
+
 	static ArrayList<Integer> order;
 
-	public static ArrayList<Node> ConvertToGraph(ArrayList<Point> points, Point car, ArrayList<Point> walls) {
+	public static ArrayList<Node> ConvertToGraph(ArrayList<Point> points, ArrayList<Point> car, ArrayList<Point> redPoints) {
 
 		ArrayList<Node> nodes = new ArrayList<Node>();
-		nodes.add(new Node(0, (int)car.x, (int)car.y ));
+		nodes.add(new Node(0, (int)car.get(0).x, (int)car.get(0).y ));
 		for(int i = 0; i < points.size(); i++) {
 			nodes.add(new Node(i+1, (int)points.get(i).x, (int)points.get(i).y));
 		}
-		
+
+		boolean possibleMove = true;
 		for(int i = 0; i < nodes.size(); i++) {
 			Node from = nodes.get(i);
 			for(int j = i+1; j < nodes.size(); j++) {
 				Node to = nodes.get(j);
 				double dist = calculateDistance(from, to);
-				to.addDistance(from.getNumber(), dist);
-				from.addDistance(to.getNumber(), dist);
+
+				for(Point point : getPoints(20, to, from)) {
+					if(redPoints.contains(point)) {
+						possibleMove = false;
+					}
+				}
+				
+
+				if(possibleMove) {
+					to.addDistance(from.getNumber(), dist);
+					from.addDistance(to.getNumber(), dist);
+				}
 			}
 		}
 		return nodes;
 	}
+
+	public static Point[] getPoints(int howManyPoints, Node node1, Node node2) {
+		Point[] points = new Point[howManyPoints];
+		int yDiff = node2.getY() - node1.getY();
+		int xDiff = node2.getX() - node1.getX();
+		double slope = (double)((node2.getY() - node1.getY())/(node2.getX() - node1.getX()));
+		double x, y;
+
+		howManyPoints--;
+		for(double i = 0; i < howManyPoints; i++) {
+			y = slope == 0 ? 0 : yDiff * (i / howManyPoints);
+			x = slope == 0 ? xDiff * (i / howManyPoints) : y / slope;
+			points[(int)i] = new Point((int)Math.round(x) + node1.getX(), (int)Math.round(y) + node1.getY());
+
+		}
+		points[howManyPoints] = new Point(node2.getX(), (int)node2.getY() );
+		return points;
+
+	}
+
+
 
 	//Make a minimum spanning tree using Prim's Algorithm
 	public static ArrayList<Node> convertToMST(ArrayList<Node> graph, Node start){
@@ -84,13 +116,13 @@ public class AlgorithmController {
 			}
 		}
 		return shortestBall;
-		
+
 	}
 
 	//Performs a DFS and returns a list holding the order in which the nodes were visited
 	public static ArrayList<Integer> performDFS(ArrayList<Node> graph, Node node){
 		if(order == null) {
-		order = new ArrayList<Integer>();
+			order = new ArrayList<Integer>();
 		}
 		order.add(node.getNumber());
 		HashMap<Integer, Double> distances = node.getDistances();
@@ -100,39 +132,39 @@ public class AlgorithmController {
 			}
 		}
 		//order.add(node.getNumber());
-		
+
 		return order;
 	}
-	
+
 	public static void resetOrder() {
 		order = new ArrayList<Integer>();
 	}
-	
+
 	//Calculate the move needed to move from current position to next ball
 	public static Move calculateMove(ArrayList<Node> graph, ArrayList<Point> car, int toIndex) {
 		Move move = new Move();
 		Point middlePoint = new Point((car.get(1).x + car.get(2).x)/2,(car.get(1).y - car.get(2).y)/2);
-		
+
 		Node A = new Node((int)car.get(0).x, (int)car.get(0).y);
-		
+
 		Node B = new Node((int) middlePoint.x, (int) middlePoint.y);
-		
+
 		Node to = graph.get(toIndex);
 		//Code to figure out if car should turn left or right
 		double camper = (car.get(0).y - middlePoint.y)/(car.get(0).x - middlePoint.x);
 		double intersection = middlePoint.y - camper * middlePoint.x;
 		double lineY = camper * to.getX() + intersection;
-		
-		
-		
+
+
+
 		double dist = calculateDistance(B, to);
-		
+
 		double a = dist;
 		double b = calculateDistance(A, to);
 		double c = calculateDistance(A, B);
-		
+
 		move.setDistance(dist);
-		
+
 		/*
 		double cosC = (Math.pow(a, 2) + Math.pow(c, 2) - Math.pow(b, 2))/(2*a*c);
 		move.setAngle(Math.toDegrees(Math.acos(cosC)));
@@ -142,30 +174,30 @@ public class AlgorithmController {
 		if(car.get(0).x > middlePoint.x) {
 			move.setAngle(-move.getAngle());
 		}
-		*/
-		
+		 */
+
 		double slope1 = calculateSlope(B.getX(), A.getX(), B.getY(), A.getY());
 		double slope2 = calculateSlope(to.getX(), B.getX(), to.getY(), B.getY());
-		
+
 		double angle = calculateAngleOfLines(slope1, slope2);
 		move.setAngle(angle);
-		
+
 		return move;
 	}
-	
+
 	public static double calculateAngleOfLines(double a1, double a2) {
-		
+
 		double angle = 180 - Math.abs(Math.atan(a1) - Math.atan(a2));
-		
+
 		return angle;
 	}
-	
+
 	public static double calculateSlope(double x1, double x2, double y1, double y2) {
-		
+
 		double a = (y2 - y1)/(x2 - x1);
 		return a;
 	}
-	
+
 	public static double calculateCarAngle(ArrayList<Point> car) {
 		Point middlePoint = new Point((car.get(1).x + car.get(2).x)/2, (car.get(1).y + car.get(2).y)/2);
 		double a = car.get(0).x - middlePoint.x;
