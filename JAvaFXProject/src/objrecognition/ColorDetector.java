@@ -50,7 +50,7 @@ public class ColorDetector {
 				int value = (int) returned[0];
 				if(value == 255) {
 					//System.out.println("x: " + i + "\ty: " + j);
-					foundWalls.add(new Point(i,j));
+					foundWalls.add(new Point(j,i));
 				}
 			}
 		}
@@ -65,32 +65,32 @@ public class ColorDetector {
 	        
 	}  
 
-	public Mat getColor(Mat frame) {
-		Mat blurImg = new Mat();
-		Mat hsvImage = new Mat();
-		Mat color_range_red_dark = new Mat();
-		Mat color_range_red_light = new Mat();
-
-
-		//bluring image to filter noises
-		Imgproc.GaussianBlur(frame, blurImg, new Size(5,5),0);
-
-		//converting blured image from BGR to HSV
-		Imgproc.cvtColor(blurImg, hsvImage, Imgproc.COLOR_BGR2HSV);
-
-		//filtering red pixels based on given opencv HSV color range
-		Core.inRange(hsvImage, new Scalar(0, 70, 50), new Scalar(10, 255, 255), color_range_red_dark);
-		Core.inRange(hsvImage, new Scalar(170, 70, 50), new Scalar(180, 255, 255), color_range_red_light);
-
-		foundWalls.clear();
-
-		//applying bitwise or to detect red.
-		Core.bitwise_or(color_range_red_dark, color_range_red_light, frame);
-		
-	
-		return frame;
-	        
-	        
-	}  
+//	public Mat getColor(Mat frame) {
+//		Mat blurImg = new Mat();
+//		Mat hsvImage = new Mat();
+//		Mat color_range_red_dark = new Mat();
+//		Mat color_range_red_light = new Mat();
+//
+//
+//		//bluring image to filter noises
+//		Imgproc.GaussianBlur(frame, blurImg, new Size(5,5),0);
+//
+//		//converting blured image from BGR to HSV
+//		Imgproc.cvtColor(blurImg, hsvImage, Imgproc.COLOR_BGR2HSV);
+//
+//		//filtering red pixels based on given opencv HSV color range
+//		Core.inRange(hsvImage, new Scalar(0, 70, 50), new Scalar(10, 255, 255), color_range_red_dark);
+//		Core.inRange(hsvImage, new Scalar(170, 70, 50), new Scalar(180, 255, 255), color_range_red_light);
+//
+//		foundWalls.clear();
+//
+//		//applying bitwise or to detect red.
+//		Core.bitwise_or(color_range_red_dark, color_range_red_light, frame);
+//		
+//	
+//		return frame;
+//	        
+//	        
+//	}  
 
 }

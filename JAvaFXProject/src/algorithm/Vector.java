@@ -48,7 +48,7 @@ public class Vector {
 		return new Vector(x/length, y/length);
 	}
 	
-	public Vector getTværVector() {
+	public Vector getTvaerVector() {
 		return new Vector(-this.y, this.x);
 	}
 	
