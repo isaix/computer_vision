@@ -11,6 +11,7 @@ import algorithm.Node;
 import objrecognition.Car;
 import objrecognition.ColorDetector;
 import objrecognition.HoughCirclesRun;
+import objrecognition.*;
 
 public class SocketRunnable implements Runnable{
 
@@ -18,7 +19,7 @@ public class SocketRunnable implements Runnable{
 	public void run() {
 			
 		SocketClient client = new SocketClient();
-		client.startConnection("192.168.43.174", 6666);
+		client.startConnection("172.20.10.6", 6666);
 		
 		
 		boolean connected = true; 
@@ -31,18 +32,29 @@ public class SocketRunnable implements Runnable{
 		
 		while(connected) {
 			
+			try {
+				ArrayList<Point> foundWalls2 = ColorDetector.run();
+				System.out.println(foundWalls2.size());
+			} catch(Exception e){
+				System.out.println("Intet frame, start kameraet.");				
+			}
+			
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+//			ArrayList<LineZ> lines = new ArrayList<>();
 //			try {
-//				ArrayList<Point> foundWalls2 = ColorDetector.run();
-//			} catch(Exception e){
-//				System.out.println("Intet frame, start kameraet.");				
+//				lines = HoughLinesRun.getLines();
+//			} catch(Exception e) {
+//				System.out.print("o shit");
 //			}
 //			
-//			try {
-//				Thread.sleep(2000);
-//			} catch (InterruptedException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
+//			
+//			System.out.println("LINES" + lines.size());
 
 			
 			ArrayList<Point> points = HoughCirclesRun.getvalidBallCoordinates();
@@ -79,7 +91,8 @@ public class SocketRunnable implements Runnable{
 			int nearestBall = AlgorithmController.findNearestBall(nodes);
 			
 			//ArrayList<Integer> moves = AlgorithmController.performDFS(nodes, nodes.get(0));
-			Move move = AlgorithmController.calculateMove(nodes, car, nearestBall);
+			//Move move = AlgorithmController.calculateMove(nodes, car, nearestBall);
+			Move move = AlgorithmController.calculateMoveButThisOneIsBetterBecauseWeUseVectors(nodes, car, nearestBall);
 			System.out.println("move: " + nodes.get(nearestBall).getX() + ", " + nodes.get(nearestBall).getY());
 			System.out.println("angle: " + move.getAngle());
 			
