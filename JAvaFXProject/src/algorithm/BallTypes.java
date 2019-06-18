@@ -2,6 +2,8 @@ package algorithm;
 
 public enum BallTypes {
 	NORMAL,
+	WALL, 
+	CORNER,
 	WALL_LEFT,
 	WALL_RIGHT,
 	WALL_TOP,
@@ -9,6 +11,7 @@ public enum BallTypes {
 	CORNER_TOPRIGHT,
 	CORNER_TOPLEFT,
 	CORNER_BOTTOMRIGHT,
-	CORNER_BOTTOMLEFT,
+	CORNER_BOTTOMLEFT
+	
 
 }

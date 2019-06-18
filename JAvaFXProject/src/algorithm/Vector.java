@@ -52,6 +52,10 @@ public class Vector {
 		return new Vector(-this.y, this.x);
 	}
 	
+	public Vector getOppositeVector() {
+		return new Vector(-this.y, this.x);
+	}
+	
 	public Vector mulitply(double factor) {
 		return new Vector(x * factor, y * factor);
 	}
