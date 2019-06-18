@@ -8,7 +8,7 @@ import org.opencv.core.Point;
 import algorithm.AlgorithmController;
 import algorithm.Move;
 import algorithm.Node;
-import objrecognition.Car;
+import objrecognition.CarDetectorRun;
 import objrecognition.ColorDetector;
 import objrecognition.HoughCirclesRun;
 
@@ -57,7 +57,7 @@ public class SocketRunnable implements Runnable{
 			}
 			System.out.println("points: " + points.size());
 
-			ArrayList<Point> car = Car.getvalidCarCoordinates();
+			ArrayList<Point> car = CarDetectorRun.getvalidCarCoordinates();
 			
 			System.out.println("car: " + car.size());
 

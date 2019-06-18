@@ -34,19 +34,16 @@ class HoughLinesRun {
 		cdstP = cdst.clone();
 
 
-		// Probabilistic Line Transform
+		
 		Mat linesP = new Mat(); // will hold the results of the detection
-		// GAMMEL Imgproc.HoughLinesP(dst, linesP, 1, Math.PI/180, 50, 50, 10); // runs the actual detection
 		Imgproc.HoughLinesP(dst, linesP, 1, Math.PI/180, 50, 50, 30); // runs the actual detection
 		// Draw the lines
 		ArrayList<LineZ> linesArray = new ArrayList<>();
 		for (int x = 0; x < linesP.rows(); x++) {
 			double[] l = linesP.get(x, 0);
-			//Imgproc.line(frame, new Point(l[0], l[1]), new Point(l[2], l[3]), new Scalar(0, 0, 255), 3, Imgproc.LINE_AA, 0);
 			Imgproc.line(frame, new Point(l[0], l[1]), new Point(l[2], l[3]), new Scalar(103, 247, 12), 3, Imgproc.LINE_AA, 0);
 			linesArray.add(new LineZ(new Point(l[0], l[1]), new Point(l[2], l[3])));
-			// System.out.println("Punkt et " + l[0] + " og " + l[1]);            
-			// System.out.println("Punkt to " + l[2] + " og " + l[3]);
+		
 
 		}
 
