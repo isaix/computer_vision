@@ -13,7 +13,7 @@ import algorithm.CarStartPoint;
 import algorithm.Move;
 import algorithm.Node;
 import algorithm.ShortPoint;
-import objrecognition.Car;
+import objrecognition.CarDetectorRun;
 import objrecognition.ColorDetector;
 import objrecognition.HoughCirclesRun;
 import objrecognition.*;
@@ -72,7 +72,7 @@ public class SocketRunnable implements Runnable{
 			}
 			System.out.println("points: " + points.size());
 
-			ArrayList<Point> car = Car.getvalidCarCoordinates();
+			ArrayList<Point> car = CarDetectorRun.getvalidCarCoordinates();
 			
 			if(carStartPoint == null) {
 				carStartPoint = new CarStartPoint(car, AlgorithmController.calculateCarAngle(car));

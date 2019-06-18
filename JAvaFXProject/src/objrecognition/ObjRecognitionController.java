@@ -1,27 +1,16 @@
 package objrecognition;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Scalar;
-import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 
 import utils.Utils;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -46,10 +35,10 @@ public class ObjRecognitionController
 	
 	private HoughCirclesRun houghCirclesRun = new HoughCirclesRun();
 	private HoughLinesRun houghLinesRun = new HoughLinesRun();	
+	private CarDetectorRun car = new CarDetectorRun();
+	
 	private ColorDetector cd = new ColorDetector();
-	private Car car = new Car();	
-	
-	
+
 		
 	/**
 	 * The action triggered by pushing the button on the GUI

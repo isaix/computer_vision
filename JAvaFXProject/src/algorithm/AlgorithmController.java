@@ -8,8 +8,6 @@ import java.util.Stack;
 import org.opencv.core.*;
 
 import algorithm.Move;
-import objrecognition.Car;
-
 
 public class AlgorithmController {
 
@@ -454,16 +452,6 @@ public class AlgorithmController {
 	public static ArrayList<Integer> solveTravelingSalesmanProblemInConstantTime() {
 		//TODO: Implement
 		return null;
-	}
-	
-	public static void setCarFinishValue() {
-		ArrayList<Point> carpoints = Car.getvalidCarCoordinates();
-		double carAngle = calculateCarAngle(carpoints);
-		
-		CarStartPoint carStartPoint = new CarStartPoint(carpoints, carAngle);
-		
-		
-		
 	}
 
 }
