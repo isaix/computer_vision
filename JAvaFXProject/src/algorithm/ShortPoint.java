@@ -4,8 +4,8 @@ import org.opencv.core.Point;
 
 public class ShortPoint {
 	
-	short x;
-	short y;
+	public short x;
+	public short y;
 
 	
 	public ShortPoint(short x, short y) {

@@ -11,13 +11,15 @@ import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
+import algorithm.ShortPoint;
+
 public class ColorDetector {
 	ArrayList<Point> whiteCoordinates = new ArrayList<Point>();
-	static ArrayList<Point> foundWalls = new ArrayList<Point>();
+	static ArrayList<ShortPoint> foundWalls = new ArrayList<ShortPoint>();
 	Mat whitePoints = new Mat();
 	
 	
-	public static ArrayList<Point> run() {
+	public static ArrayList<ShortPoint> run() {
 
 		Mat frame = ObjRecognitionController.getLatestFrame();
 //		String defaultFile = "//Users//frederikhusted//git//computer_vision//etsjovtbillede.png";
@@ -50,7 +52,7 @@ public class ColorDetector {
 				int value = (int) returned[0];
 				if(value == 255) {
 					//System.out.println("x: " + i + "\ty: " + j);
-					foundWalls.add(new Point(j,i));
+					foundWalls.add(new ShortPoint((short) j,(short) i));
 				}
 			}
 		}

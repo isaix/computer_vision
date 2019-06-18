@@ -8,6 +8,7 @@ import java.util.Stack;
 import org.opencv.core.*;
 
 import algorithm.Move;
+import objrecognition.Car;
 
 
 public class AlgorithmController {
@@ -15,8 +16,8 @@ public class AlgorithmController {
 	static ArrayList<Integer> order;
 	static int area = 77;
 
-	public static ArrayList<Node> ConvertToGraph(ArrayList<Point> points, ArrayList<Point> car, ArrayList<Point> redPoints) {
-
+	public static ArrayList<Node> ConvertToGraph(ArrayList<Point> points, ArrayList<Point> car, ArrayList<ShortPoint> redPoints) {
+		
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		nodes.add(new Node(0, (int)car.get(0).x, (int)car.get(0).y ));
 		for(int i = 0; i < points.size(); i++) {
@@ -99,7 +100,7 @@ public class AlgorithmController {
 		return nodes;
 	}
 	
-	private static BallTypes findBallType(Point point, ArrayList<Point> redPoints) {
+	private static BallTypes findBallType(Point point, ArrayList<ShortPoint> redPoints) {
 		int wallCount = 0;
 		boolean top = false;
 		boolean bottom = false;
@@ -157,7 +158,7 @@ public class AlgorithmController {
 		
 	}
 
-	private static boolean isPossibleMove(ArrayList<Point> car, Node to, ArrayList<Point> redPoints) {
+	private static boolean isPossibleMove(ArrayList<Point> car, Node to, ArrayList<ShortPoint> redPoints) {
 		int tolerance = 108;
 		Point middlePoint = new Point((car.get(1).x + car.get(2).x)/2, (car.get(1).y + car.get(2).y)/2);
 		Vector carVector = new Vector(middlePoint.x - car.get(0).x, middlePoint.y - car.get(0).y);
@@ -453,6 +454,16 @@ public class AlgorithmController {
 	public static ArrayList<Integer> solveTravelingSalesmanProblemInConstantTime() {
 		//TODO: Implement
 		return null;
+	}
+	
+	public static void setCarFinishValue() {
+		ArrayList<Point> carpoints = Car.getvalidCarCoordinates();
+		double carAngle = calculateCarAngle(carpoints);
+		
+		CarStartPoint carStartPoint = new CarStartPoint(carpoints, carAngle);
+		
+		
+		
 	}
 
 }

@@ -9,14 +9,18 @@ import org.opencv.core.Algorithm;
 import org.opencv.core.Point;
 
 import algorithm.AlgorithmController;
+import algorithm.CarStartPoint;
 import algorithm.Move;
 import algorithm.Node;
+import algorithm.ShortPoint;
 import objrecognition.Car;
 import objrecognition.ColorDetector;
 import objrecognition.HoughCirclesRun;
 import objrecognition.*;
 
 public class SocketRunnable implements Runnable{
+	
+	CarStartPoint carStartPoint;
 
 	@Override
 	public void run() {
@@ -70,6 +74,12 @@ public class SocketRunnable implements Runnable{
 
 			ArrayList<Point> car = Car.getvalidCarCoordinates();
 			
+			if(carStartPoint == null) {
+				carStartPoint = new CarStartPoint(car, AlgorithmController.calculateCarAngle(car));
+			} else {
+				System.out.println(carStartPoint);
+			}
+			
 			System.out.println("car: " + car.size());
 
 			if(car == null || car.isEmpty()) {
@@ -82,15 +92,15 @@ public class SocketRunnable implements Runnable{
 				continue;
 			}
 			
-			ArrayList<Point> foundWalls2 = null;
+			ArrayList<ShortPoint> foundWalls2 = null;
 			try {
 				foundWalls2 = ColorDetector.run();
 				System.out.println(foundWalls2.size());
 			} catch(Exception e){
 				System.out.println("Intet frame, start kameraet.");				
 			}
-			for(Point point : foundWalls2) {
-				pw.append("X:" + point.x +  ", Y:" + point.y + "\n");
+			for(ShortPoint shortpoint : foundWalls2) {
+				pw.append("X:" + shortpoint.x +  ", Y:" + shortpoint.y + "\n");
 			}
 			
 			try {
