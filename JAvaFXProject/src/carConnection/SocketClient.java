@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import algorithm.Move;
 
@@ -36,9 +37,9 @@ public class SocketClient {
 		}
 	}
 	
-	public String sendMove(Move move) {
+	public String sendMoves(ArrayList<Move> moves) {
 		try {
-			objectOutputStream.writeObject(move);
+			objectOutputStream.writeObject(moves);
 			String resp = in.readLine();
 			return resp;
 		} catch(Exception e) {

@@ -56,9 +56,11 @@ public class Node implements Comparable{
 	public void addDistance(int number, double distance) {
 		distances.put(number, distance);
 	}
+
 	@Override
 	public int compareTo(Object compnode) {
 		return this.number - ((Node)compnode).getNumber();
 	}
+	
 	
 }	
