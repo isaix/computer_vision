@@ -26,7 +26,7 @@ public class SocketRunnable implements Runnable{
 	public void run() {
 			
 		SocketClient client = new SocketClient();
-		client.startConnection("172.20.10.6", 6666);
+		client.startConnection("192.168.43.174", 6666);
 		
 		PrintWriter pw = null;
 		try {
@@ -70,17 +70,18 @@ public class SocketRunnable implements Runnable{
 				}
 				continue;
 			}
-			System.out.println("points: " + points.size());
+			//System.out.println("points: " + points.size());
 
 			ArrayList<Point> car = CarDetectorRun.getvalidCarCoordinates();
 			
 			if(carStartPoint == null) {
+				System.out.println("car = " + car);
 				carStartPoint = new CarStartPoint(car, AlgorithmController.calculateCarAngle(car));
 			} else {
-				System.out.println(carStartPoint);
+				System.out.println("startpoints " + carStartPoint.carAngle + ", " + carStartPoint.carPoints);
 			}
 			
-			System.out.println("car: " + car.size());
+			//System.out.println("car: " + car.size());
 
 			if(car == null || car.isEmpty()) {
 				try {
@@ -113,14 +114,14 @@ public class SocketRunnable implements Runnable{
 			ArrayList<Node> nodes = AlgorithmController.ConvertToGraph(points, car, foundWalls2);
 			//nodes = AlgorithmController.convertToMST(nodes, nodes.get(0));
 			for (Node node : nodes) {
-				System.out.println("all nodes: " + node.getX()+ ","+node.getY());
+				//System.out.println("all nodes: " + node.getX()+ ","+node.getY());
 			}
 			int nearestBall = AlgorithmController.findNearestBall(nodes);
 			
 			//ArrayList<Integer> moves = AlgorithmController.performDFS(nodes, nodes.get(0));
 			//Move move = AlgorithmController.calculateMove(nodes, car, nearestBall);
 			ArrayList<Move> moves = AlgorithmController.calculateMoveButThisOneIsBetterBecauseWeUseVectors(nodes, car, nearestBall);
-			System.out.println("move: " + nodes.get(nearestBall).getX() + ", " + nodes.get(nearestBall).getY());
+			//System.out.println("move: " + nodes.get(nearestBall).getX() + ", " + nodes.get(nearestBall).getY());
 			//System.out.println("angle: " + move.getAngle());
 			
 			if(moves.equals(lastMove)) {

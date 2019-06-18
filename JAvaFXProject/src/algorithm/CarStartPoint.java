@@ -6,11 +6,11 @@ import org.opencv.core.Point;
 
 public class CarStartPoint {
 
-	public ArrayList<Point> carPoints;
+	public ArrayList<Point> carPoints = new ArrayList<Point>();
 	public double carAngle;
 	
 	public CarStartPoint(ArrayList<Point> carPoints, double carAngle) {
-		this.carPoints = carPoints;
+		this.carPoints.addAll(carPoints);
 		this.carAngle = carAngle;
 	}
 	
