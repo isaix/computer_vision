@@ -325,9 +325,8 @@ public class AlgorithmController {
 		move.setAngle(angle);
 
 		return move;
-	}
-
-
+	}	
+	
 	public static ArrayList<Move> calculateMoveButThisOneIsBetterBecauseWeUseVectors(ArrayList<Node> graph, ArrayList<Point> car, int toIndex) {
 		System.out.println(car.get(1).x);
 		System.out.println(car.get(2).x);
@@ -352,6 +351,7 @@ public class AlgorithmController {
 		move.setAngle(angle);
 		move.setDistance((length/777)*100-10);
 		System.out.println("DISTNACE: " + length);
+		
 		ArrayList<Move> moves = new ArrayList<Move>();
 		moves.add(move);
 		return moves;
@@ -398,24 +398,29 @@ public class AlgorithmController {
 		System.out.println("MANGE MANGE MOVES " + moves.size());
 		return moves;
 		
-		
-		
-		/*
-		System.out.println("Collect ball now");
-		if(true) {
-			System.out.println("We are done now");
-			try {
-				Robot robot = new Robot();
-				robot.selfDestroy();
-				robot.out!
-			}
-			catch(Exception e) {
-				e.printStackTrace();
-			}
+	}
+	
+	public static ArrayList<Move> calculateMoveButThisTimeTheCrossIsRotatedAndWeTryToTakeThisIntoAccount(ArrayList<Node> graph, ArrayList<Point> car, int toIndex, ArrayList<Point> redPoints){
 			
-		}
-		*/
+		ArrayList<Move> moves = new ArrayList<Move>();
 		
+		
+		Node ball = graph.get(toIndex);
+		
+		for(int i = ball.getX()-77; i<ball.getX()+77; i++){
+			
+			for(int j = ball.getY()-77; j<ball.getY()+77; j++) {
+				
+				//if()
+				
+			}			
+		}
+		
+		
+		
+		
+		
+		return moves; 
 	}
 
 	public static double calculateAngleOfLines(double a1, double a2) {

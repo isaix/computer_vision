@@ -8,6 +8,8 @@ public class Node implements Comparable{
 	private int x;
 	private int y;
 	private HashMap<Integer, Double> distances;
+	private Node helperNode;
+	private BallTypes type;
 	
 	public Node() {
 		distances = new HashMap<Integer, Double>();
@@ -61,6 +63,20 @@ public class Node implements Comparable{
 	public int compareTo(Object compnode) {
 		return this.number - ((Node)compnode).getNumber();
 	}
+	public Node getHelperNode() {
+		return helperNode;
+	}
+	public void setHelperNode(Node helperNode) {
+		this.helperNode = helperNode;
+	}
+	public BallTypes getType() {
+		return type;
+	}
+	public void setType(BallTypes type) {
+		this.type = type;
+	}
+	
+	
 	
 	
 }	
