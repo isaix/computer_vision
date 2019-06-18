@@ -30,6 +30,7 @@ public class HoughLinesRun {
 		Imgproc.cvtColor(dst, cdst, Imgproc.COLOR_GRAY2BGR);
 		cdstP = cdst.clone();
 
+
 		// Probabilistic Line Transform
 		Mat linesP = new Mat(); // will hold the results of the detection
 		Imgproc.HoughLinesP(dst, linesP, 1, Math.PI/180, 50, 50, 30); // runs the actual detection
