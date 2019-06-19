@@ -18,9 +18,7 @@ public class CarDetectorRun {
 
 	Mat circles;
 
-	ArrayList<Point> carCoordinates = new ArrayList<Point>();
 	static ArrayList<Point> validCarCoordinates = new ArrayList<Point>();	
-	ArrayList<Point> foundCoordinates = new ArrayList<Point>();	
 
 
 	static public ArrayList<Point> getvalidCarCoordinates(){
@@ -29,10 +27,18 @@ public class CarDetectorRun {
 		validCarCoordinates.clear();
 		return temp;
 	}
+	
+	static public void resetCarCoordinates() {
+		validCarCoordinates.clear();
+	}
 
 
 
 	public Mat run(Mat frame) {
+		ArrayList<Point> carCoordinates = new ArrayList<Point>();
+	
+		ArrayList<Point> foundCoordinates = new ArrayList<Point>();	
+
 
 		Mat gray = new Mat();
 
@@ -86,14 +92,14 @@ public class CarDetectorRun {
 
 			if (carCoordinates.isEmpty() && !foundCoordinates.isEmpty()) {
 
-				//				System.out.println("change");
+				//				//System.out.println("change");
 
 				carCoordinates.addAll(foundCoordinates);
 
 			} else {
 
 				if(!(carCoordinates.size() == foundCoordinates.size())) {
-					//					System.out.println("change, new size");
+					//					//System.out.println("change, new size");
 					carCoordinates.clear();
 					carCoordinates.addAll(foundCoordinates);
 				} else {
@@ -108,17 +114,17 @@ public class CarDetectorRun {
 							}
 						}
 						if(!similar) {
-							//							System.out.println("change, not similar");
+							//							//System.out.println("change, not similar");
 							carCoordinates.clear();
 							carCoordinates.addAll(foundCoordinates);
 							validCount = 0;
-							//							System.out.println("valid count reset");
+							//							//System.out.println("valid count reset");
 							break;
 						} 
 					}
 					if (similar) {
 						validCount++;
-						//						System.out.println("valid incremented: " + validCount);
+						//						//System.out.println("valid incremented: " + validCount);
 					}
 				}
 			} 
@@ -139,18 +145,18 @@ public class CarDetectorRun {
 						}
 					}
 					if(!similar) {
-						//						System.out.println("a new valid array");
+						//						//System.out.println("a new valid array");
 						validCarCoordinates.clear();
-						//						System.out.println("unsorted Coordinates: " + carCoordinates);
+						//						//System.out.println("unsorted Coordinates: " + carCoordinates);
 
 						validCarCoordinates.addAll(comparePoints(carCoordinates.get(0), carCoordinates.get(1), carCoordinates.get(2)));
 						validCount = 0;
-						System.out.println("valid car coordinates: " + validCarCoordinates);
+						//System.out.println("valid car coordinates: " + validCarCoordinates);
 						break;
 					} 
 				}
 				if (similar) {
-					System.out.println("valid array is still the same");
+					//System.out.println("valid array is still the same");
 				}
 
 				validCount = 0;

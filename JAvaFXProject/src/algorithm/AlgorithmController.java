@@ -12,7 +12,7 @@ import algorithm.Move;
 public class AlgorithmController {
 
 	static ArrayList<Integer> order;
-	static int area = 77;
+	static final int TI_CM = 77;
 
 	public static ArrayList<Node> ConvertToGraph(ArrayList<Point> points, ArrayList<Point> car, ArrayList<ShortPoint> redPoints) {
 
@@ -30,7 +30,7 @@ public class AlgorithmController {
 
 			if(nodes.get(i).getType().equals(BallTypes.NORMAL)) {
 				Node to = nodes.get(i);
-				System.out.println("X: " + nodes.get(i).getX() + "Y: " + nodes.get(i).getY());
+				//Sytem.out.println("X: " + nodes.get(i).getX() + "Y: " + nodes.get(i).getY());
 				if(isPossibleMove(car, to, redPoints)) {
 					nodes.get(0).addDistance(i, calculateDistance(nodes.get(0), to));
 					nodes.get(i).addDistance(0, calculateDistance(nodes.get(0), to));
@@ -66,9 +66,9 @@ public class AlgorithmController {
 		double shortestDistance = Double.MAX_VALUE;
 		ShortPoint closestPoint = null;
 
-		for(short i = (short)(ballNode.getX()-77); i<(short)(ballNode.getX()+77); i++){
+		for(short i = (short)(ballNode.getX()-TI_CM); i<(short)(ballNode.getX()+TI_CM); i++){
 
-			for(short j = (short)(ballNode.getY()-77); j<(short)(ballNode.getY()+77); j++) {
+			for(short j = (short)(ballNode.getY()-TI_CM); j<(short)(ballNode.getY()+TI_CM); j++) {
 
 				if(redPoints.contains(new ShortPoint(i, j))) {
 
@@ -94,17 +94,18 @@ public class AlgorithmController {
 
 		Node helperNode = null; 
 
-		for(int i = 1; i <= 77; i++) {
+		for(int i = 1; i <= TI_CM; i++) {
 			ShortPoint aPoint = new ShortPoint((short) (ballNode.getX() + (i * crossVector.getX())),(short) (ballNode.getY() + (i * crossVector.getY())));
 			if(redPoints.contains(aPoint)) {
+				//Sytem.out.println("ISSA CORNER BALL NR 1");
 				ballNode.setType(BallTypes.CORNER);
 
 				//Udregner HelperNode til dette punkt - kan konfigureres. 
 				//Udregner position 20 cm v�k fra bolden
-				helperNode = new Node((int)(ballNode.getX() - 154*shortestVector.getX()), (int)(ballNode.getY() - 154*shortestVector.getY()));
+				helperNode = new Node((int)(ballNode.getX() - TI_CM*2.5*shortestVector.getX()), (int)(ballNode.getY() - TI_CM*2.5*shortestVector.getY()));
 				//Udregner position 15 cm fordrejet fra bolden yderligere
-				helperNode.setX((int)(helperNode.getX() - 116*crossVector.getX()));
-				helperNode.setY((int)(helperNode.getY() - 116*crossVector.getY()));
+				helperNode.setX((int)(helperNode.getX() - TI_CM*crossVector.getX()));
+				helperNode.setY((int)(helperNode.getY() - TI_CM*crossVector.getY()));
 
 				ballNode.setHelperNode(helperNode);
 				return;
@@ -113,17 +114,18 @@ public class AlgorithmController {
 
 		Vector oppositeCrossVector = crossVector.getOppositeVector();		
 
-		for(int i = 1; i <= 77; i++) {
+		for(int i = 1; i <= TI_CM; i++) {
 			ShortPoint aPoint = new ShortPoint((short) (ballNode.getX() + (i * oppositeCrossVector.getX())),(short) (ballNode.getY() + (i * oppositeCrossVector.getY())));
 			if(redPoints.contains(aPoint)) {
+				//Sytem.out.println("ISSA CORNER BALL NR 2");
 				ballNode.setType(BallTypes.CORNER);
 
 				//Udregner HelperNode til dette punkt - kan konfigureres. 
 				//Udregner position 20 cm v�k fra bolden
-				helperNode = new Node((int)(ballNode.getX() + 154*crossVector.getX()), (int)(ballNode.getY() + 154*crossVector.getY()));
+				helperNode = new Node((int)(ballNode.getX() + TI_CM*2.5*crossVector.getX()), (int)(ballNode.getY() + TI_CM*2.5*crossVector.getY()));
 				//Udregner position 15 cm fordrejet fra bolden yderligere
-				helperNode.setX((int)(helperNode.getX() - 116*shortestVector.getX()));
-				helperNode.setY((int)(helperNode.getY() - 116*shortestVector.getY()));
+				helperNode.setX((int)(helperNode.getX() - TI_CM*1.25*shortestVector.getX()));
+				helperNode.setY((int)(helperNode.getY() - TI_CM*1.25*shortestVector.getY()));
 
 				ballNode.setHelperNode(helperNode);
 				return;
@@ -132,9 +134,9 @@ public class AlgorithmController {
 
 		ballNode.setType(BallTypes.WALL);
 
-		helperNode = new Node((int)(154*(ballNode.getX()-shortestVector.x)), (int)(154*(ballNode.getY()-shortestVector.y)));
-		helperNode.setX((int)(helperNode.getX() - 116*crossVector.getX()));
-		helperNode.setY((int)(helperNode.getY() - 116*crossVector.getY()));
+		helperNode = new Node((int)((ballNode.getX() - TI_CM*2.5*shortestVector.x)), (int)((ballNode.getY() - TI_CM*2.5*shortestVector.y)));
+		helperNode.setX((int)(helperNode.getX() + TI_CM*1.25*crossVector.getX()));
+		helperNode.setY((int)(helperNode.getY() + TI_CM*1.25*crossVector.getY()));
 
 		ballNode.setHelperNode(helperNode);
 
@@ -148,7 +150,7 @@ public class AlgorithmController {
 		boolean right = false;
 
 		for(double i = point.x; i < point.x + 78; i++) {
-			System.out.println("AHHHHHHHH");
+			//Sytem.out.println("AHHHHHHHH");
 			if(redPoints.contains(new Point(i, point.y))) {
 				right = true;
 				wallCount++;
@@ -176,9 +178,9 @@ public class AlgorithmController {
 				break;
 			}
 		}
-		System.out.println("WallCount: " + wallCount);
+		//Sytem.out.println("WallCount: " + wallCount);
 		
-		System.out.println("WallCount: " + wallCount);
+		//Sytem.out.println("WallCount: " + wallCount);
 
 		if(top && left) {
 			return BallTypes.CORNER_TOPLEFT;
@@ -218,12 +220,12 @@ public class AlgorithmController {
 		for(int i = 0; i < carnodes.length; i++) {
 			for(Point point : getPoints(20, carnodes[i], ballnodes[i])) {
 				if(redPoints.contains(point)) {
-					System.out.println("NOT POSSIBLE");
+					//Sytem.out.println("NOT POSSIBLE");
 					return false;
 				}
 			}
 		}
-		System.out.println("POSSIBLE");
+		//Sytem.out.println("POSSIBLE");
 		return true;		
 	}
 
@@ -231,9 +233,9 @@ public class AlgorithmController {
 		Point[] points = new Point[howManyPoints];
 		int yDiff = node2.getY() - node1.getY();
 		int xDiff = node2.getX() - node1.getX();
-		System.out.println("DIVIDER MED NOGET ANDET END  0, PLS");
-		System.out.println(node2.getX());
-		System.out.println(node1.getX());
+		//Sytem.out.println("DIVIDER MED NOGET ANDET END  0, PLS");
+		//Sytem.out.println(node2.getX());
+		//Sytem.out.println(node1.getX());
 		double slope = (double)((node2.getY() - node1.getY())/(node2.getX() - node1.getX()));
 		double x, y;
 
@@ -371,21 +373,22 @@ public class AlgorithmController {
 	}	
 
 	public static ArrayList<Move> calculateMoveButThisOneIsBetterBecauseWeUseVectors(ArrayList<Node> graph, ArrayList<Point> car, int toIndex) {
-		System.out.println(car.get(1).x);
-		System.out.println(car.get(2).x);
+		//Sytem.out.println(car.get(1).x);
+		//Sytem.out.println(car.get(2).x);
 		Point middlePoint = new Point((car.get(1).x + car.get(2).x)/2, (car.get(1).y + car.get(2).y)/2);
-		System.out.println("middle" + middlePoint.x + ", " + middlePoint.y);
+		//Sytem.out.println("middle" + middlePoint.x + ", " + middlePoint.y);
 		Node ball = graph.get(toIndex);
-		System.out.println("BALLTYOPE");
-		System.out.println(ball.getType().toString());
+		//Sytem.out.println("BALLTYOPE");
+		//Sytem.out.println(ball.getType().toString());
+		System.out.println(ball.getType());
 		if(!ball.getType().equals(BallTypes.NORMAL)) {
 			return calculateMoveButThisOneIsOnlyUsedWhenItIsAHelperNode(car, ball);
 		}
 
 		Vector carVector = new Vector(car.get(0).x - middlePoint.x, car.get(0).y - middlePoint.y);
-		System.out.println(carVector.getX() + ", " + carVector.getY());
+		//Sytem.out.println(carVector.getX() + ", " + carVector.getY());
 		Vector ballVector = new Vector(ball.getX() - middlePoint.x, ball.getY() - middlePoint.y);
-		System.out.println(ballVector.getX() + ", " + ballVector.getY());
+		//Sytem.out.println(ballVector.getX() + ", " + ballVector.getY());
 		double angle = carVector.calculateAngle(ballVector);
 		double length = calculateDistance(ball, new Node(-1, (int) middlePoint.x, (int) middlePoint.y));
 
@@ -394,8 +397,9 @@ public class AlgorithmController {
 		}
 		Move move = new Move();
 		move.setAngle(angle);
-		move.setDistance((length/777)*100-10);
+		move.setDistance((length/777)*100-5);
 		
+		System.out.println(ball.getX() + ", " + ball.getY());
 		System.out.println("DISTNACE: " + length);
 
 		System.out.println("ANGLE: " + angle);
@@ -410,13 +414,13 @@ public class AlgorithmController {
 
 		ArrayList<Move> moves = new ArrayList<Move>();
 		Point middlePoint = new Point((car.get(1).x + car.get(2).x)/2, (car.get(1).y + car.get(2).y)/2);
-		System.out.println("middle" + middlePoint.x + ", " + middlePoint.y);
+		//Sytem.out.println("middle" + middlePoint.x + ", " + middlePoint.y);
 		Node helperNode = ball.getHelperNode();
 
 		Vector carVector = new Vector(car.get(0).x - middlePoint.x, car.get(0).y - middlePoint.y);
-		System.out.println(carVector.getX() + ", " + carVector.getY());
+		//Sytem.out.println(carVector.getX() + ", " + carVector.getY());
 		Vector helperVector = new Vector(helperNode.getX() - middlePoint.x, helperNode.getY() - middlePoint.y);
-		System.out.println(helperVector.getX() + ", " + helperVector.getY());
+		//Sytem.out.println(helperVector.getX() + ", " + helperVector.getY());
 		double angle = carVector.calculateAngle(helperVector);
 		double length = calculateDistance(helperNode, new Node(-1, (int) middlePoint.x, (int) middlePoint.y));
 
@@ -425,26 +429,39 @@ public class AlgorithmController {
 		}
 		Move move = new Move();
 		move.setAngle(angle);
-		move.setDistance((length/777)*100-10);
+		move.setDistance((length/777)*100-5);
 		moves.add(move);
-
+		System.out.println(ball.getX() + ", " + ball.getY());
+		
+		
 		Vector ballVector = new Vector(ball.getX() - helperNode.getX(), ball.getY() - helperNode.getY());
-		angle = helperVector.calculateAngle(ballVector);
+		angle = ballVector.calculateAngle(helperVector);
+		
+		
+		
+		angle-=10;
 
+		
 		if(helperVector.crossProduct(ballVector) > 0) {
 			angle = -angle;
 		}
+		
+		
 
-		length = calculateDistance(helperNode, ball);
+		
+		
 		Move move2 = new Move();
-		move2.setAngle(angle*0.5);
-		move2.setDistance((length/777)*100-10);
+		move2.setAngle(angle);
+		move2.setDistance(10);
+		move2.driveSlowly = true;
 		moves.add(move2);
 		Move move3 = new Move();
-		move3.setAngle(0);
+		move3.setAngle(-30);
 		move3.setDistance(-move2.getDistance());
+		move3.driveSlowly = true;
 		moves.add(move3);
-		System.out.println("MANGE MANGE MOVES " + moves.size());
+		////Sytem.out.println("MANGE MANGE MOVES " + moves.size());
+		
 		return moves;
 	}
 

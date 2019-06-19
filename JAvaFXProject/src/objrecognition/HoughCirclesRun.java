@@ -20,14 +20,8 @@ public class HoughCirclesRun {
 
 	Mat circles;
 
-	ArrayList<Point> ballCoordinates = new ArrayList<Point>();
 	static ArrayList<Point> validBallCoordinates = new ArrayList<Point>();	
-	ArrayList<Point> foundCoordinates = new ArrayList<Point>();	
 	
-	
-	public ArrayList<Point> getFoundBallCoordinates(){
-		return foundCoordinates;
-	}
 
 
 	static public ArrayList<Point> getvalidBallCoordinates(){
@@ -37,6 +31,9 @@ public class HoughCirclesRun {
 
 
 	public Mat run(Mat frame) {
+		ArrayList<Point> ballCoordinates = new ArrayList<Point>();
+		ArrayList<Point> foundCoordinates = new ArrayList<Point>();	
+
 //		if (counter < 100) {
 //			 Imgcodecs.imwrite( "./testAssets/image3-" + counter + ".jpg", frame );
 //		}
@@ -54,7 +51,7 @@ public class HoughCirclesRun {
 		circles = new Mat();
 		Imgproc.HoughCircles(gray, circles, Imgproc.HOUGH_GRADIENT, 1.0, (double)gray.rows()/16, 100.0, 30.0, 1, 25); 
 		
-		//System.out.println(circles.cols());
+		////System.out.println(circles.cols());
 		
 		for (int x = 0; x < circles.cols(); x++) {
 			double[] c = circles.get(0, x);
@@ -88,9 +85,9 @@ public class HoughCirclesRun {
 
 		}
 		
-//		System.out.println("found " + foundCoordinates);
-//		System.out.println("valid " + validBallCoordinates);
-//		System.out.println("ball " + ballCoordinates);
+//		//System.out.println("found " + foundCoordinates);
+//		//System.out.println("valid " + validBallCoordinates);
+//		//System.out.println("ball " + ballCoordinates);
 //
 //
 
@@ -102,14 +99,14 @@ public class HoughCirclesRun {
 
 			if (ballCoordinates.isEmpty() && !foundCoordinates.isEmpty()) {
 
-				//				System.out.println("change");
+				//				//System.out.println("change");
 
 				ballCoordinates.addAll(foundCoordinates);
 
 			} else {
 
 				if(!(ballCoordinates.size() == foundCoordinates.size())) {
-					//					System.out.println("change, new size");
+					//					//System.out.println("change, new size");
 					ballCoordinates.clear();
 					ballCoordinates.addAll(foundCoordinates);
 				} else {
@@ -124,17 +121,17 @@ public class HoughCirclesRun {
 							}
 						}
 						if(!similar) {
-							//							System.out.println("change, not similar");
+							//							//System.out.println("change, not similar");
 							ballCoordinates.clear();
 							ballCoordinates.addAll(foundCoordinates);
 							validCount = 0;
-							//							System.out.println("valid count reset");
+							//							//System.out.println("valid count reset");
 							break;
 						} 
 					}
 					if (similar) {
 						validCount++;
-						//						System.out.println("valid incremented: " + validCount);
+						//						//System.out.println("valid incremented: " + validCount);
 					}
 
 				}
@@ -142,10 +139,10 @@ public class HoughCirclesRun {
 			} 
 			//			
 
-			System.out.println("\n found balls: " + ballCoordinates.size());
-						System.out.println("and the coordinates are: " + ballCoordinates);
+			//System.out.println("\n found balls: " + ballCoordinates.size());
+						//System.out.println("and the coordinates are: " + ballCoordinates);
 			
-						System.out.println("END \n");
+						//System.out.println("END \n");
 
 
 			foundCoordinates.clear();
@@ -163,17 +160,17 @@ public class HoughCirclesRun {
 						}
 					}
 					if(!similar) {
-						System.out.println("a new valid array");
+						//System.out.println("a new valid array");
 						validBallCoordinates.clear();
 						validBallCoordinates.addAll(ballCoordinates);
 
 						validCount = 0;
-						//System.out.println("valid count reset");
+						////System.out.println("valid count reset");
 						break;
 					} 
 				}
 				if (similar) {
-					System.out.println("valid array is still the same");
+					//System.out.println("valid array is still the same");
 				}
 
 				validCount = 0;
@@ -201,10 +198,10 @@ public class HoughCirclesRun {
 	
 	
 	public void testImage(Mat image) {
-		System.out.println(foundCoordinates);
+		//System.out.println(foundCoordinates);
 		for(int i = 0; i<15 ; i++) {
 			image = run(image);
-			System.out.println(foundCoordinates);
+			//System.out.println(foundCoordinates);
 
 		}
 	}

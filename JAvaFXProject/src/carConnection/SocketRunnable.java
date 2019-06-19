@@ -28,16 +28,6 @@ public class SocketRunnable implements Runnable{
 		SocketClient client = new SocketClient();
 		client.startConnection("192.168.43.174", 6666);
 		
-		PrintWriter pw = null;
-		try {
-			pw = new PrintWriter("redpoints.txt", "UTF-8");
-		} catch (FileNotFoundException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		} catch (UnsupportedEncodingException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
 		boolean connected = true; 
 		
 		int i = 0; 
@@ -53,11 +43,11 @@ public class SocketRunnable implements Runnable{
 //			try {
 //				lines = HoughLinesRun.getLines();
 //			} catch(Exception e) {
-//				System.out.print("o shit");
+//				//System.out.print("o shit");
 //			}
 //			
 //			
-//			System.out.println("LINES" + lines.size());
+//			//System.out.println("LINES" + lines.size());
 
 			
 			ArrayList<Point> points = HoughCirclesRun.getvalidBallCoordinates();
@@ -70,18 +60,13 @@ public class SocketRunnable implements Runnable{
 				}
 				continue;
 			}
-			//System.out.println("points: " + points.size());
+			////System.out.println("points: " + points.size());
 
 			ArrayList<Point> car = CarDetectorRun.getvalidCarCoordinates();
 			
-			if(carStartPoint == null) {
-				System.out.println("car = " + car);
-				carStartPoint = new CarStartPoint(car, AlgorithmController.calculateCarAngle(car));
-			} else {
-				System.out.println("startpoints " + carStartPoint.carAngle + ", " + carStartPoint.carPoints);
-			}
 			
-			//System.out.println("car: " + car.size());
+			
+			////System.out.println("car: " + car.size());
 
 			if(car == null || car.isEmpty()) {
 				try {
@@ -93,36 +78,46 @@ public class SocketRunnable implements Runnable{
 				continue;
 			}
 			
+			if(carStartPoint == null) {
+				//System.out.println("car = " + car);
+				carStartPoint = new CarStartPoint(car, AlgorithmController.calculateCarAngle(car));
+			} else {
+				//System.out.println("startpoints " + carStartPoint.carAngle + ", " + carStartPoint.carPoints);
+			}
+			
 			ArrayList<ShortPoint> foundWalls2 = null;
 			try {
 				foundWalls2 = ColorDetector.run();
-				System.out.println(foundWalls2.size());
+				//System.out.println(foundWalls2.size());
 			} catch(Exception e){
-				System.out.println("Intet frame, start kameraet.");				
+				//System.out.println("Intet frame, start kameraet.");				
 			}
+			/*
 			for(ShortPoint shortpoint : foundWalls2) {
 				pw.append("X:" + shortpoint.x +  ", Y:" + shortpoint.y + "\n");
 			}
+			*/
 			
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(500);
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			
 			ArrayList<Node> nodes = AlgorithmController.ConvertToGraph(points, car, foundWalls2);
+			foundWalls2 = null;
 			//nodes = AlgorithmController.convertToMST(nodes, nodes.get(0));
 			for (Node node : nodes) {
-				//System.out.println("all nodes: " + node.getX()+ ","+node.getY());
+				////System.out.println("all nodes: " + node.getX()+ ","+node.getY());
 			}
 			int nearestBall = AlgorithmController.findNearestBall(nodes);
 			
 			//ArrayList<Integer> moves = AlgorithmController.performDFS(nodes, nodes.get(0));
 			//Move move = AlgorithmController.calculateMove(nodes, car, nearestBall);
 			ArrayList<Move> moves = AlgorithmController.calculateMoveButThisOneIsBetterBecauseWeUseVectors(nodes, car, nearestBall);
-			//System.out.println("move: " + nodes.get(nearestBall).getX() + ", " + nodes.get(nearestBall).getY());
-			//System.out.println("angle: " + move.getAngle());
+			////System.out.println("move: " + nodes.get(nearestBall).getX() + ", " + nodes.get(nearestBall).getY());
+			////System.out.println("angle: " + move.getAngle());
 			
 			if(moves.equals(lastMove)) {
 				continue;
@@ -134,6 +129,7 @@ public class SocketRunnable implements Runnable{
 			moves = null;
 			points.clear();
 			car.clear();
+			CarDetectorRun.resetCarCoordinates();
 						
 			if(resp.toLowerCase().equals("done")) {
 				client.stopConnection();
