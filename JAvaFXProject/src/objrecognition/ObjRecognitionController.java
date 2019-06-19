@@ -42,14 +42,20 @@ public class ObjRecognitionController
 	private void startCamera()
 	{
 		HoughCirclesRun houghCirclesRun = new HoughCirclesRun();
+		HoughLinesRun houghLinesRun = new HoughLinesRun();	
 		CarDetectorRun car = new CarDetectorRun();
 
+		ColorDetector cd = new ColorDetector();
+
+
+		// bind a text property with the string containing the current range of
+		// HSV values for object detection
 
 		// set a fixed width for all the image to show and preserve image ratio
 		this.imageViewProperties(this.originalFrame, 700);
 
-//		if (!this.cameraActive)
-//		{
+		if (!this.cameraActive)
+		{
 			// start the video capture
 			this.capture.open(0);
 			// is the video stream available?
@@ -66,12 +72,15 @@ public class ObjRecognitionController
 						// effectively grab and process a single frame
 						Mat frame = grabFrame();
 
+						//houghLinesRun.runLine(frame);
 						houghCirclesRun.run(frame);
 						car.run(frame);
+						//cd.run();
 
 						// convert and show the frame
 						Image imageToShow = Utils.mat2Image(frame);
 						updateImageView(originalFrame, imageToShow);
+
 
 					}
 				};
@@ -87,17 +96,17 @@ public class ObjRecognitionController
 				// log the error
 				System.err.println("Failed to open the camera connection...");
 			}
-//		}
-//		else
-//		{
-//			// the camera is not active at this point
-//			this.cameraActive = false;
-//			// update again the button content
-//			this.cameraButton.setText("Start Camera");
-//
-//			// stop the timer
-//			this.stopAcquisition();
-//		}
+		}
+		else
+		{
+			// the camera is not active at this point
+			this.cameraActive = false;
+			// update again the button content
+			this.cameraButton.setText("Start Camera");
+
+			// stop the timer
+			this.stopAcquisition();
+		}
 	}
 
 

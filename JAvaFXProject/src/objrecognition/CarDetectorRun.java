@@ -18,7 +18,9 @@ public class CarDetectorRun {
 
 	Mat circles;
 
+	ArrayList<Point> carCoordinates = new ArrayList<Point>();
 	static ArrayList<Point> validCarCoordinates = new ArrayList<Point>();	
+	ArrayList<Point> foundCoordinates = new ArrayList<Point>();	
 
 
 	static public ArrayList<Point> getvalidCarCoordinates(){
@@ -35,10 +37,6 @@ public class CarDetectorRun {
 
 
 	public Mat run(Mat frame) {
-		ArrayList<Point> carCoordinates = new ArrayList<Point>();
-	
-		ArrayList<Point> foundCoordinates = new ArrayList<Point>();	
-
 
 		Mat gray = new Mat();
 

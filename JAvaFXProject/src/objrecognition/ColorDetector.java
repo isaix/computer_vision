@@ -18,8 +18,6 @@ public class ColorDetector {
 	
 	
 	public static ArrayList<ShortPoint> run() {
-		ArrayList<Point> whiteCoordinates = new ArrayList<Point>();
-		Mat whitePoints = new Mat();
 		System.out.println("ColorDetect Run");
 		ArrayList<ShortPoint> foundWalls = new ArrayList<ShortPoint>();
 
