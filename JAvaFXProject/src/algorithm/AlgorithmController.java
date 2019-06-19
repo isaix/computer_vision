@@ -148,7 +148,7 @@ public class AlgorithmController {
 		boolean right = false;
 
 		for(double i = point.x; i < point.x + 78; i++) {
-			//System.out.println("AHHHHHHHH");
+			System.out.println("AHHHHHHHH");
 			if(redPoints.contains(new Point(i, point.y))) {
 				right = true;
 				wallCount++;
@@ -176,7 +176,7 @@ public class AlgorithmController {
 				break;
 			}
 		}
-		//System.out.println("WallCount: " + wallCount);
+		System.out.println("WallCount: " + wallCount);
 		
 		System.out.println("WallCount: " + wallCount);
 
@@ -218,7 +218,7 @@ public class AlgorithmController {
 		for(int i = 0; i < carnodes.length; i++) {
 			for(Point point : getPoints(20, carnodes[i], ballnodes[i])) {
 				if(redPoints.contains(point)) {
-					//System.out.println("NOT POSSIBLE");
+					System.out.println("NOT POSSIBLE");
 					return false;
 				}
 			}
@@ -231,9 +231,9 @@ public class AlgorithmController {
 		Point[] points = new Point[howManyPoints];
 		int yDiff = node2.getY() - node1.getY();
 		int xDiff = node2.getX() - node1.getX();
-		//System.out.println("DIVIDER MED NOGET ANDET END  0, PLS");
-		//System.out.println(node2.getX());
-		//System.out.println(node1.getX());
+		System.out.println("DIVIDER MED NOGET ANDET END  0, PLS");
+		System.out.println(node2.getX());
+		System.out.println(node1.getX());
 		double slope = (double)((node2.getY() - node1.getY())/(node2.getX() - node1.getX()));
 		double x, y;
 
@@ -371,19 +371,21 @@ public class AlgorithmController {
 	}	
 
 	public static ArrayList<Move> calculateMoveButThisOneIsBetterBecauseWeUseVectors(ArrayList<Node> graph, ArrayList<Point> car, int toIndex) {
-		//System.out.println(car.get(1).x);
-		//System.out.println(car.get(2).x);
+		System.out.println(car.get(1).x);
+		System.out.println(car.get(2).x);
 		Point middlePoint = new Point((car.get(1).x + car.get(2).x)/2, (car.get(1).y + car.get(2).y)/2);
-		//System.out.println("middle" + middlePoint.x + ", " + middlePoint.y);
+		System.out.println("middle" + middlePoint.x + ", " + middlePoint.y);
 		Node ball = graph.get(toIndex);
+		System.out.println("BALLTYOPE");
+		System.out.println(ball.getType().toString());
 		if(!ball.getType().equals(BallTypes.NORMAL)) {
 			return calculateMoveButThisOneIsOnlyUsedWhenItIsAHelperNode(car, ball);
 		}
 
 		Vector carVector = new Vector(car.get(0).x - middlePoint.x, car.get(0).y - middlePoint.y);
-		//System.out.println(carVector.getX() + ", " + carVector.getY());
+		System.out.println(carVector.getX() + ", " + carVector.getY());
 		Vector ballVector = new Vector(ball.getX() - middlePoint.x, ball.getY() - middlePoint.y);
-		//System.out.println(ballVector.getX() + ", " + ballVector.getY());
+		System.out.println(ballVector.getX() + ", " + ballVector.getY());
 		double angle = carVector.calculateAngle(ballVector);
 		double length = calculateDistance(ball, new Node(-1, (int) middlePoint.x, (int) middlePoint.y));
 
@@ -394,9 +396,9 @@ public class AlgorithmController {
 		move.setAngle(angle);
 		move.setDistance((length/777)*100-10);
 		
-		//System.out.println("DISTNACE: " + length);
-
 		System.out.println("DISTNACE: " + length);
+
+		System.out.println("ANGLE: " + angle);
 
 		ArrayList<Move> moves = new ArrayList<Move>();
 		moves.add(move);
