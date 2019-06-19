@@ -39,9 +39,10 @@ public class SocketRunnable implements Runnable{
 			e2.printStackTrace();
 		}
 		boolean connected = true; 
+		boolean moveToWall = true;
 		
 		int i = 0; 
-
+		ArrayList<Move> moves;
 			
 		//Move[] moves = new Move[] {new Move(30, 90), new Move(30, 90), new Move(30, 90), new Move(30, 90)};
 		ArrayList<Move> lastMove = null;
@@ -118,9 +119,20 @@ public class SocketRunnable implements Runnable{
 			}
 			int nearestBall = AlgorithmController.findNearestBall(nodes);
 			
+			if(nearestBall == -1) {
+				moves = AlgorithmController.gotoWall(foundWalls2, moveToWall, car);
+				String resp = client.sendMoves(moves);
+				lastMove = moves;
+				moves = null;
+				points.clear();
+				car.clear();
+				moveToWall = false;
+				continue;
+				
+			}
 			//ArrayList<Integer> moves = AlgorithmController.performDFS(nodes, nodes.get(0));
 			//Move move = AlgorithmController.calculateMove(nodes, car, nearestBall);
-			ArrayList<Move> moves = AlgorithmController.calculateMoveButThisOneIsBetterBecauseWeUseVectors(nodes, car, nearestBall);
+			moves = AlgorithmController.calculateMoveButThisOneIsBetterBecauseWeUseVectors(nodes, car, nearestBall);
 			//System.out.println("move: " + nodes.get(nearestBall).getX() + ", " + nodes.get(nearestBall).getY());
 			//System.out.println("angle: " + move.getAngle());
 			
@@ -139,6 +151,7 @@ public class SocketRunnable implements Runnable{
 				client.stopConnection();
 				connected = false; 
 			}
+			moveToWall = true;
 			
 		}
 		
