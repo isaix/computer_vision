@@ -43,8 +43,8 @@ public class AlgorithmController {
 					nodes.get(i).addDistance(0, calculateDistance(nodes.get(0), to));
 				}
 			}
-			
-			
+
+
 			/*
 			for(int j = i+1; j < nodes.size(); j++) {
 				Node to = nodes.get(j);
@@ -144,8 +144,43 @@ public class AlgorithmController {
 		helperNode.setY((int)(helperNode.getY() - TI_CM*1.25*shortestVector.getY()));
 
 		ballNode.setHelperNode(helperNode);
+	}
+
+	public static ArrayList<Move> gotoWall(ArrayList<ShortPoint> redpoints, boolean firstMove, ArrayList<Point> car) {
+		ArrayList<Move> moves = new ArrayList<Move>();
+		ShortPoint middlePoint = new ShortPoint((short)((car.get(1).x + car.get(2).x)/2), (short)((car.get(1).y + car.get(2).y)/2));
+		if(firstMove) {
+			Move wallMove = new Move();
+			double angle = calculateCarAngle(car);
+			wallMove.setAngle(-angle);
+			double pixelCount = 0;
+			for(short i = middlePoint.getX(); i < 1920; i++ ) {
+				if(redpoints.contains(new ShortPoint(i, middlePoint.getY()))) {
+					break;
+				}
+				pixelCount++;
+			}
+			wallMove.setDistance((pixelCount/777)*100-10);
+			moves.add(wallMove);
+			return moves;
+		}
+		Move move = new Move();
+		Vector carVector = new Vector(middlePoint.x - car.get(0).x, middlePoint.y - car.get(0).y);
+		Vector crossVector = carVector.getTvaerVector().getNormalizedVector();
+		double maxDist = 0;
+		for(short i = 0; i < 1920; i++) {
+			if(redpoints.contains(new ShortPoint((short) (middlePoint.x + (i * crossVector.getX())),(short) (middlePoint.y + (i * crossVector.getY()))))) {
+				break;
+			}
+			maxDist++;
+		}
+		move.setAngle(-90);
+		move.setDistance((maxDist/777)*100-10);
+		moves.add(move);
+		return moves;
 
 	}
+
 
 	private static BallTypes findBallType(Point point, ArrayList<ShortPoint> redPoints) {
 		int wallCount = 0;
@@ -183,6 +218,8 @@ public class AlgorithmController {
 				break;
 			}
 		}
+		System.out.println("WallCount: " + wallCount);
+
 		//Sytem.out.println("WallCount: " + wallCount);
 		
 		//Sytem.out.println("WallCount: " + wallCount);
@@ -402,6 +439,8 @@ public class AlgorithmController {
 		}
 		Move move = new Move();
 		move.setAngle(angle);
+		//move.setDistance((length/777)*100-10);
+
 		move.setDistance((length/777)*100-5);
 		
 		System.out.println(ball.getX() + ", " + ball.getY());
@@ -491,41 +530,48 @@ public class AlgorithmController {
 	}
 
 
-public static double calculateAngleOfLines(double a1, double a2) {
+	public static double calculateAngleOfLines(double a1, double a2) {
 
-	double angle = 180 - Math.abs(Math.atan(a1) - Math.atan(a2));
+		double angle = 180 - Math.abs(Math.atan(a1) - Math.atan(a2));
 
-	return angle;
-}
+		return angle;
+	}
 
-public static double calculateSlope(double x1, double x2, double y1, double y2) {
+	public static double calculateSlope(double x1, double x2, double y1, double y2) {
 
-	double a = (y2 - y1)/(x2 - x1);
-	return a;
-}
+		double a = (y2 - y1)/(x2 - x1);
+		return a;
+	}
 
-public static double calculateCarAngle(ArrayList<Point> car) {
-	Point middlePoint = new Point((car.get(1).x + car.get(2).x)/2, (car.get(1).y + car.get(2).y)/2);
+	public static double calculateCarAngle(ArrayList<Point> car) {
+		Point middlePoint = new Point((car.get(1).x + car.get(2).x)/2, (car.get(1).y + car.get(2).y)/2);
+		Vector carVector = new Vector(middlePoint.x - car.get(0).x, middlePoint.y - car.get(0).y);
+		Vector horizontalVector = new Vector(1, 0);
+		double angle = carVector.calculateAngle(horizontalVector);
+
+		//New code should be better. Test before removing this.
+		/*
 	double a = car.get(0).x - middlePoint.x;
 	double b = car.get(0).y - middlePoint.y;
 	double dist = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
 	double cosC = (Math.pow(a, 2) + Math.pow(dist, 2) - Math.pow(b, 2))/(2*a*dist);
-	return Math.toDegrees(Math.acos(cosC));
-}
+		 */
+		return angle;
+	}
 
-//Calculates total distance (in matrix coordinates) using Pythagoras
-private static double calculateDistance(Node from, Node to){
-	int a = Math.abs(from.getX() - to.getX());
-	int b = Math.abs(from.getY() - to.getY());
+	//Calculates total distance (in matrix coordinates) using Pythagoras
+	private static double calculateDistance(Node from, Node to){
+		int a = Math.abs(from.getX() - to.getX());
+		int b = Math.abs(from.getY() - to.getY());
 
-	return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-}
+		return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+	}
 
 
-//Solve the travelling salemans problem in constant time
-public static ArrayList<Integer> solveTravelingSalesmanProblemInConstantTime() {
-	//TODO: Implement
-	return null;
-}
+	//Solve the travelling salemans problem in constant time
+	public static ArrayList<Integer> solveTravelingSalesmanProblemInConstantTime() {
+		//TODO: Implement
+		return null;
+	}
 
 }
