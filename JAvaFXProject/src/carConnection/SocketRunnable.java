@@ -82,7 +82,7 @@ public class SocketRunnable implements Runnable{
 			if(carStartPoint == null) {
 				//System.out.println("car = " + car);
 				carStartPoint = new CarStartPoint(car, AlgorithmController.calculateCarAngle(car));
-			} else {
+			} else{
 				//System.out.println("startpoints " + carStartPoint.carAngle + ", " + carStartPoint.carPoints);
 			}
 			
