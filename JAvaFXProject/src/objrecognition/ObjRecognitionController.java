@@ -23,69 +23,62 @@ public class ObjRecognitionController
 	// the FXML area for showing the current frame
 	@FXML
 	private ImageView originalFrame;
-	
+
 	// a timer for acquiring the video stream
 	private ScheduledExecutorService timer;
 	// the OpenCV object that performs the video capture
 	private VideoCapture capture = new VideoCapture();
 	// a flag to change the button behavior
 	private boolean cameraActive;
-	
-	static Mat latestFrame;
-	
-	private HoughCirclesRun houghCirclesRun = new HoughCirclesRun();
-	private HoughLinesRun houghLinesRun = new HoughLinesRun();	
-	private CarDetectorRun car = new CarDetectorRun();
-	
-	private ColorDetector cd = new ColorDetector();
 
-		
+	static Mat latestFrame;
+
+
+
 	/**
 	 * The action triggered by pushing the button on the GUI
 	 */
 	@FXML
 	private void startCamera()
 	{
-		// bind a text property with the string containing the current range of
-		// HSV values for object detection
-				
+		HoughCirclesRun houghCirclesRun = new HoughCirclesRun();
+		CarDetectorRun car = new CarDetectorRun();
+
+
 		// set a fixed width for all the image to show and preserve image ratio
 		this.imageViewProperties(this.originalFrame, 700);
-		
-		if (!this.cameraActive)
-		{
+
+//		if (!this.cameraActive)
+//		{
 			// start the video capture
-			this.capture.open(1);
+			this.capture.open(0);
 			// is the video stream available?
 			if (this.capture.isOpened())
 			{
 				this.cameraActive = true;
-				
-				
+
+
 				Runnable frameGrabber = new Runnable() {
-					
+
 					@Override
 					public void run()
 					{
 						// effectively grab and process a single frame
 						Mat frame = grabFrame();
-						
-						//houghLinesRun.runLine(frame);
+
 						houghCirclesRun.run(frame);
 						car.run(frame);
-						//cd.getColor(frame);
 
 						// convert and show the frame
 						Image imageToShow = Utils.mat2Image(frame);
 						updateImageView(originalFrame, imageToShow);
-						
-						
+
 					}
 				};
-				
+
 				this.timer = Executors.newSingleThreadScheduledExecutor();
-				this.timer.scheduleAtFixedRate(frameGrabber, 0, 33, TimeUnit.MILLISECONDS);
-				
+				this.timer.scheduleAtFixedRate(frameGrabber, 0, 20, TimeUnit.MILLISECONDS);
+
 				// update the button content
 				this.cameraButton.setText("Stop Camera");
 			}
@@ -94,20 +87,20 @@ public class ObjRecognitionController
 				// log the error
 				System.err.println("Failed to open the camera connection...");
 			}
-		}
-		else
-		{
-			// the camera is not active at this point
-			this.cameraActive = false;
-			// update again the button content
-			this.cameraButton.setText("Start Camera");
-			
-			// stop the timer
-			this.stopAcquisition();
-		}
+//		}
+//		else
+//		{
+//			// the camera is not active at this point
+//			this.cameraActive = false;
+//			// update again the button content
+//			this.cameraButton.setText("Start Camera");
+//
+//			// stop the timer
+//			this.stopAcquisition();
+//		}
 	}
-	
-	
+
+
 	/**
 	 * Get a frame from the opened video stream (if any)
 	 * 
@@ -116,7 +109,7 @@ public class ObjRecognitionController
 	public Mat grabFrame()
 	{
 		Mat frame = new Mat();
-		
+
 		// check if the capture is open
 		if (this.capture.isOpened())
 		{
@@ -124,7 +117,7 @@ public class ObjRecognitionController
 			{
 				// read the current frame
 				this.capture.read(frame);
-				
+
 			}
 			catch (Exception e)
 			{
@@ -136,12 +129,12 @@ public class ObjRecognitionController
 		latestFrame = frame;
 		return frame;
 	}
-	
+
 	static Mat getLatestFrame() {
 		return latestFrame;
 	}
-	
-	
+
+
 	/**
 	 * Set typical {@link ImageView} properties: a fixed width and the
 	 * information to preserve the original image ration
@@ -158,7 +151,7 @@ public class ObjRecognitionController
 		// preserve the image ratio
 		image.setPreserveRatio(true);
 	}
-	
+
 	/**
 	 * Stop the acquisition from the camera and release all the resources
 	 */
@@ -178,14 +171,14 @@ public class ObjRecognitionController
 				System.err.println("Exception in stopping the frame capture, trying to release the camera now... " + e);
 			}
 		}
-		
+
 		if (this.capture.isOpened())
 		{
 			// release the camera
 			this.capture.release();
 		}
 	}
-	
+
 	/**
 	 * Update the {@link ImageView} in the JavaFX main thread
 	 * 
@@ -198,7 +191,7 @@ public class ObjRecognitionController
 	{
 		Utils.onFXThread(view.imageProperty(), image);
 	}
-	
+
 	/**
 	 * On application close, stop the acquisition from the camera
 	 */
@@ -206,5 +199,5 @@ public class ObjRecognitionController
 	{
 		this.stopAcquisition();
 	}
-	
+
 }

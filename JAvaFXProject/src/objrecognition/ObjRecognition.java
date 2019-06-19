@@ -64,8 +64,6 @@ public class ObjRecognition extends Application
 		
 		thread.start();
 		
-
-		
 		
 		launch(args);
 		
