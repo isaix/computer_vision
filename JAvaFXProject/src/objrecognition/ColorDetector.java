@@ -22,7 +22,7 @@ public class ColorDetector {
 		ArrayList<ShortPoint> foundWalls = new ArrayList<ShortPoint>();
 
 
-	
+
 		Mat frame = ObjRecognitionController.getLatestFrame();
 		
 		Mat blurImg = new Mat();

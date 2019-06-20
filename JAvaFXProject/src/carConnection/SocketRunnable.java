@@ -88,10 +88,15 @@ public class SocketRunnable implements Runnable{
 			
 			ArrayList<ShortPoint> foundWalls2 = null;
 			try {
+				//for(int i = 0; i < 5; i++) {
+					
+				//}
 				foundWalls2 = ColorDetector.run();
+				System.out.println("IT HAS BEEN RUN");
 				//System.out.println(foundWalls2.size());
 			} catch(Exception e){
-				//System.out.println("Intet frame, start kameraet.");				
+				//System.out.println("Intet frame, start kameraet.");
+				e.printStackTrace();
 			}
 			/*
 			for(ShortPoint shortpoint : foundWalls2) {

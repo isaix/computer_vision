@@ -4,6 +4,7 @@ public enum BallTypes {
 	NORMAL,
 	WALL, 
 	CORNER,
+	/*
 	WALL_LEFT,
 	WALL_RIGHT,
 	WALL_TOP,
@@ -12,6 +13,7 @@ public enum BallTypes {
 	CORNER_TOPLEFT,
 	CORNER_BOTTOMRIGHT,
 	CORNER_BOTTOMLEFT
+	*/
 	
 
 }
