@@ -8,6 +8,7 @@ import java.util.Stack;
 import org.opencv.core.*;
 
 import algorithm.Move;
+import carConnection.SocketRunnable;
 
 public class AlgorithmController {
 
@@ -292,7 +293,7 @@ public class AlgorithmController {
 		return null;
 	}
 
-	private static boolean isPossibleMove(ArrayList<Point> car, Node to, ArrayList<ShortPoint> redPoints) {
+	public static boolean isPossibleMove(ArrayList<Point> car, Node to, ArrayList<ShortPoint> redPoints) {
 		int tolerance = 108;
 		Point middlePoint = new Point((car.get(1).x + car.get(2).x)/2, (car.get(1).y + car.get(2).y)/2);
 		Vector carVector = new Vector(middlePoint.x - car.get(0).x, middlePoint.y - car.get(0).y);
@@ -485,6 +486,7 @@ public class AlgorithmController {
 		if(carVector.crossProduct(ballVector) > 0) {
 			angle = -angle;
 		}
+		
 		Move move = new Move();
 		move.setAngle(angle);
 		//move.setDistance((length/777)*100-10);

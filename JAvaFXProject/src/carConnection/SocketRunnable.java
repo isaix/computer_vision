@@ -20,7 +20,7 @@ import objrecognition.*;
 
 public class SocketRunnable implements Runnable{
 	
-	CarStartPoint carStartPoint;
+	public static CarStartPoint carStartPoint;
 
 	@Override
 	public void run() {
@@ -107,6 +107,21 @@ public class SocketRunnable implements Runnable{
 			}
 			
 			ArrayList<Node> nodes = AlgorithmController.ConvertToGraph(points, car, foundWalls2);
+			
+			if(points.isEmpty()) {
+				Node carMiddle = new Node(-1, (int)(carStartPoint.carPoints.get(0).x), (int)(carStartPoint.carPoints.get(0).y));
+				nodes.clear();
+				nodes.add(carMiddle);
+				if(AlgorithmController.isPossibleMove(car, carMiddle, foundWalls2)) {
+					moves = AlgorithmController.calculateMoveButThisOneIsBetterBecauseWeUseVectors(nodes, car, 0);
+					moves.get(0).setAngle(carStartPoint.carAngle);
+					client.sendMoves(moves);
+				}
+				else {
+					AlgorithmController.gotoWall(foundWalls2, moveToWall, car);
+				}
+			}
+			
 			foundWalls2 = null;
 			//nodes = AlgorithmController.convertToMST(nodes, nodes.get(0));
 			for (Node node : nodes) {
