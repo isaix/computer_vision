@@ -8,7 +8,7 @@ import org.opencv.core.Point;
 import org.opencv.highgui.HighGui;
 import org.opencv.imgproc.Imgproc;
 
-public class HoughLinesRun {
+public class LineDetector {
 	static double errormagin = 8.0;
 	int linecounter = 0;
 	int delay = 30;

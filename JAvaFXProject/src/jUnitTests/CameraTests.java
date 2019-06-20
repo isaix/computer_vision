@@ -11,11 +11,11 @@ import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
-import objrecognition.HoughCirclesRun;
+import objrecognition.CircleDetector;
 
 public class CameraTests {
 
-	private HoughCirclesRun houghCirclesRun = new HoughCirclesRun();
+	private CircleDetector houghCirclesRun = new CircleDetector();
 	
 	private ScheduledExecutorService timer;
 

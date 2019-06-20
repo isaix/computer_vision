@@ -9,7 +9,7 @@ import org.opencv.imgproc.Imgproc;
 import java.util.ArrayList;
 
 
-public class HoughCirclesRun {
+public class CircleDetector {
 
 	int counter = 0;
 	int frameDelay = 15;

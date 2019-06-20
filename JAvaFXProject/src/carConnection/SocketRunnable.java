@@ -13,9 +13,9 @@ import algorithm.CarStartPoint;
 import algorithm.Move;
 import algorithm.Node;
 import algorithm.ShortPoint;
-import objrecognition.CarDetectorRun;
+import objrecognition.CarDetector;
 import objrecognition.ColorDetector;
-import objrecognition.HoughCirclesRun;
+import objrecognition.CircleDetector;
 import objrecognition.*;
 
 public class SocketRunnable implements Runnable{
@@ -51,7 +51,7 @@ public class SocketRunnable implements Runnable{
 //			//System.out.println("LINES" + lines.size());
 
 			
-			ArrayList<Point> points = HoughCirclesRun.getvalidBallCoordinates();
+			ArrayList<Point> points = CircleDetector.getvalidBallCoordinates();
 			if(points == null || points.isEmpty()) {
 				try {
 					Thread.sleep(500);
@@ -63,7 +63,7 @@ public class SocketRunnable implements Runnable{
 			}
 			////System.out.println("points: " + points.size());
 
-			ArrayList<Point> car = CarDetectorRun.getvalidCarCoordinates();
+			ArrayList<Point> car = CarDetector.getvalidCarCoordinates();
 			
 			
 			
@@ -143,7 +143,7 @@ public class SocketRunnable implements Runnable{
 			moves = null;
 			points.clear();
 			car.clear();
-			CarDetectorRun.resetCarCoordinates();
+			CarDetector.resetCarCoordinates();
 						
 			if(resp.toLowerCase().equals("done")) {
 				client.stopConnection();

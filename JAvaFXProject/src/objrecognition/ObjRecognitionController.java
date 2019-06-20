@@ -41,9 +41,9 @@ public class ObjRecognitionController
 	@FXML
 	private void startCamera()
 	{
-		HoughCirclesRun houghCirclesRun = new HoughCirclesRun();
-		HoughLinesRun houghLinesRun = new HoughLinesRun();	
-		CarDetectorRun car = new CarDetectorRun();
+		CircleDetector houghCirclesRun = new CircleDetector();
+		LineDetector houghLinesRun = new LineDetector();	
+		CarDetector car = new CarDetector();
 
 		ColorDetector cd = new ColorDetector();
 
