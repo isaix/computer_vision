@@ -22,7 +22,7 @@ public class AlgorithmController {
 
 		for(int i = 0; i < points.size(); i++) {
 			Node ballNode = new Node(i+1, (int)points.get(i).x, (int)points.get(i).y);
-			findBallTypesButThisOneTakesANodeAsArgument(ballNode, redPoints);
+			findBallType(ballNode, redPoints);
 			nodes.add(ballNode);
 		}
 
@@ -59,18 +59,18 @@ public class AlgorithmController {
 		}
 		return nodes;
 	}
-
-
+	
 	private static void findBallTypesButThisOneTakesANodeAsArgument(Node ballNode, ArrayList<ShortPoint> redPoints) {
 
 		double shortestDistance = Double.MAX_VALUE;
 		ShortPoint closestPoint = null;
 		ArrayList<ShortPoint> closeToBall = new ArrayList<ShortPoint>();
-		
+		int count = 0;
 		for(short i = (short)(ballNode.getX()-2*TI_CM); i<(short)(ballNode.getX()+2*TI_CM); i++){
 
 			for(short j = (short)(ballNode.getY()-2*TI_CM); j<(short)(ballNode.getY()+2*TI_CM); j++) {
 				if(redPoints.contains(new ShortPoint(i, j))) {
+					count++;
 
 					double distance = calculateDistance(ballNode, new Node(i, j));
 					if(distance < shortestDistance) {
@@ -82,7 +82,7 @@ public class AlgorithmController {
 
 			}			
 		}
-		System.out.println(closeToBall.size());
+		System.out.println("COUNT:" + count);
 
 		if(shortestDistance == Double.MAX_VALUE) {
 			ballNode.setType(BallTypes.NORMAL);
@@ -182,39 +182,40 @@ public class AlgorithmController {
 	}
 
 
-	private static BallTypes findBallType(Point point, ArrayList<ShortPoint> redPoints) {
+	private static void findBallType(Node ballNode, ArrayList<ShortPoint> redPoints) {
 		int wallCount = 0;
-		boolean top = false;
-		boolean bottom = false;
-		boolean left = false;
-		boolean right = false;
+		ArrayList<ShortPoint> savedPoints = new ArrayList<ShortPoint>();
 
-		for(double i = point.x; i < point.x + 78; i++) {
+		for(double i = ballNode.getX(); i < ballNode.getX() + TI_CM; i++) {
 			//Sytem.out.println("AHHHHHHHH");
-			if(redPoints.contains(new Point(i, point.y))) {
-				right = true;
+			ShortPoint current = new ShortPoint((short)i, (short)ballNode.getY());
+			if(redPoints.contains(current)) {
 				wallCount++;
+				savedPoints.add(current);
 				break;
 			}
 		}
-		for(double i = point.x; i > point.x - 78; i--) {
-			if(redPoints.contains(new Point(i, point.y))) {
-				left = true;
+		for(double i = ballNode.getX(); i > ballNode.getX() - TI_CM; i--) {
+			ShortPoint current = new ShortPoint((short)i, (short)ballNode.getY());
+			if(redPoints.contains(current)) {
 				wallCount++;
+				savedPoints.add(current);
 				break;
 			}
 		}
-		for(double i = point.y; i < point.y + 78; i++) {
-			if(redPoints.contains(new Point(point.x, i))) {
-				top = true;
+		for(double i = ballNode.getY(); i < ballNode.getY() + TI_CM; i++) {
+			ShortPoint current = new ShortPoint((short)ballNode.getX(), (short)i);
+			if(redPoints.contains(current)) {
 				wallCount++;
+				savedPoints.add(current);
 				break;
 			}
 		}
-		for(double i = point.y; i > point.y - 78; i--) {
-			if(redPoints.contains(new Point(point.x, i))) {
-				bottom = true;
+		for(double i = ballNode.getY(); i > ballNode.getY() - TI_CM; i--) {
+			ShortPoint current = new ShortPoint((short)ballNode.getX(), (short)i);
+			if(redPoints.contains(current)) {
 				wallCount++;
+				savedPoints.add(current);
 				break;
 			}
 		}
@@ -224,6 +225,24 @@ public class AlgorithmController {
 		
 		//Sytem.out.println("WallCount: " + wallCount);
 
+		switch(wallCount) {
+		case 0: ballNode.setType(BallTypes.NORMAL);
+			break;
+		
+		case 1: ballNode.setType(BallTypes.WALL);
+			break;
+		
+		case 2: ballNode.setType(BallTypes.CORNER);
+				ballNode.setHelperNode(calculateHelperNode(savedPoints, ballNode));
+				return;
+		
+		default: System.out.println("FEJL - MERE END 2 WALLS");
+			break;
+		}
+		
+		
+		
+		/*
 		if(top && left) {
 			return BallTypes.CORNER_TOPLEFT;
 		} else if(top && right) {
@@ -241,7 +260,36 @@ public class AlgorithmController {
 		} else if(bottom) {
 			return BallTypes.WALL_BOTTOM;
 		} else return BallTypes.NORMAL;
-
+		*/
+	}
+	
+	public static Node calculateHelperNode(ArrayList<ShortPoint> savedPoints, Node ballNode) {
+		
+		if(ballNode.getType().equals(BallTypes.CORNER)) {
+			Vector v1 = new Vector(savedPoints.get(0).getX() - ballNode.getX(), savedPoints.get(0).getY() - ballNode.getY());
+			Vector v2 = new Vector(savedPoints.get(1).getX() - ballNode.getX(), savedPoints.get(1).getY() - ballNode.getY());
+			
+			double angle = v1.calculateAngle(v2);
+			if(angle > 135 || angle < 45) {
+				Vector temp = v1;
+				v1 = v2;
+				v2 = temp;
+			}
+			
+			Vector nv1 = v1.getNormalizedVector();
+			Vector cv1 = nv1.getTvaerVector();
+			
+			int helperNodeX = (int) (ballNode.getX() - (TI_CM*2*nv1.getX()) - (TI_CM*cv1.getX()) );
+			int helperNodeY = (int) (ballNode.getY() - (TI_CM*2*nv1.getY()) - (TI_CM*cv1.getY()) );
+			Node helperNode = new Node(helperNodeX, helperNodeY);
+			return helperNode;
+			
+			
+		}
+		
+		
+		
+		return null;
 	}
 
 	private static boolean isPossibleMove(ArrayList<Point> car, Node to, ArrayList<ShortPoint> redPoints) {
@@ -453,6 +501,10 @@ public class AlgorithmController {
 		return moves;
 
 	}
+	
+	public static ArrayList<Move> calculateMoveByBallTypes(){
+		return null;
+	}
 
 	public static ArrayList<Move> calculateMoveButThisOneIsOnlyUsedWhenItIsAHelperNode(ArrayList<Point> car, Node ball){
 
@@ -471,17 +523,17 @@ public class AlgorithmController {
 		if(carVector.crossProduct(helperVector) > 0) {
 			angle = -angle;
 		}
-		Move move = new Move();
-		move.setAngle(angle);
-		move.setDistance((length/777)*100-5);
-		moves.add(move);
-		System.out.println(ball.getX() + ", " + ball.getY());
-		
-		
-		Vector ballVector = new Vector(ball.getX() - helperNode.getX(), ball.getY() - helperNode.getY());
-		angle = ballVector.calculateAngle(helperVector);
 		
 		if(ball.getType().equals(BallTypes.WALL)) {
+			Move move = new Move();
+			move.setAngle(angle);
+			move.setDistance((length/777)*100-5);
+			moves.add(move);
+			System.out.println(ball.getX() + ", " + ball.getY());
+			
+			
+			Vector ballVector = new Vector(ball.getX() - helperNode.getX(), ball.getY() - helperNode.getY());
+			angle = ballVector.calculateAngle(helperVector);
 			//angle-=10;
 
 			if(helperVector.crossProduct(ballVector) > 0) {
@@ -501,6 +553,15 @@ public class AlgorithmController {
 			//Sytem.out.println("MANGE MANGE MOVES " + moves.size());
 		}
 		else {
+			Move move = new Move();
+			move.setAngle(angle);
+			move.setDistance((length/777)*100-10);
+			moves.add(move);
+			System.out.println(ball.getX() + ", " + ball.getY());
+			
+			
+			Vector ballVector = new Vector(ball.getX() - helperNode.getX(), ball.getY() - helperNode.getY());
+			angle = ballVector.calculateAngle(helperVector);
 			
 
 			if(helperVector.crossProduct(ballVector) > 0) {
