@@ -24,6 +24,7 @@ public class SocketRunnable implements Runnable{
 
 	@Override
 	public void run() {
+		long startTime = System.currentTimeMillis();
 			
 		SocketClient client = new SocketClient();
 		client.startConnection("192.168.43.174", 6666);
