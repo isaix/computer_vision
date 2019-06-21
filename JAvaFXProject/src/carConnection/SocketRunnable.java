@@ -118,11 +118,16 @@ public class SocketRunnable implements Runnable{
 				}
 				*/
 				String resp = client.sendMoves(moves);
+				
 				lastMove = moves;
 				moves = null;
 				points.clear();
 				car.clear();
 				moveToWall = false;
+				if(resp.equalsIgnoreCase("JATAKCHEF")) {
+					finishTime = System.currentTimeMillis();
+					break;
+				}
 				continue;
 				
 				
@@ -161,9 +166,7 @@ public class SocketRunnable implements Runnable{
 			car.clear();
 			CarDetector.resetCarCoordinates();
 			
-			if(resp.equals("JATAKCHEF")) {
-				finishTime = System.currentTimeMillis();
-			}
+			
 			
 			if(resp.toLowerCase().equals("done")) {
 				client.stopConnection();
@@ -176,6 +179,8 @@ public class SocketRunnable implements Runnable{
 		long minutes = seconds / 60;
 		seconds %= 60;
 		System.out.print("Det tog " + minutes + " minutter og " + seconds + "sekunder");
+		client.stopConnection();
+		System.exit(0);
 		
 	}
 

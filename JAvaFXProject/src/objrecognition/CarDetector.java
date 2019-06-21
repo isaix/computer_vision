@@ -38,6 +38,7 @@ public class CarDetector {
 
 	public Mat run(Mat frame) {
 
+		try {
 		Mat gray = new Mat();
 
 		Mat oldFrame = frame;
@@ -172,7 +173,10 @@ public class CarDetector {
 		}
 
 
-
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return frame;
 	} 
 
 

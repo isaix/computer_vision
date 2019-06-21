@@ -197,7 +197,7 @@ public class AlgorithmController {
 		int pixelCount = 0;
 		ArrayList<ShortPoint> savedPoints = new ArrayList<ShortPoint>();
 
-		for(double i = ballNode.getX(); i < ballNode.getX() + TI_CM; i++) {
+		for(double i = ballNode.getX(); i < ballNode.getX() + 2*TI_CM; i++) {
 			//Sytem.out.println("AHHHHHHHH");
 			ShortPoint current = new ShortPoint((short)i, (short)ballNode.getY());
 			if(redPoints.contains(current)) {
@@ -211,7 +211,7 @@ public class AlgorithmController {
 			}
 		}
 		pixelCount = 0;
-		for(double i = ballNode.getX(); i > ballNode.getX() - TI_CM; i--) {
+		for(double i = ballNode.getX(); i > ballNode.getX() - 2*TI_CM; i--) {
 			ShortPoint current = new ShortPoint((short)i, (short)ballNode.getY());
 			if(redPoints.contains(current)) {
 				pixelCount++;
@@ -224,7 +224,7 @@ public class AlgorithmController {
 			}
 		}
 		pixelCount = 0;
-		for(double i = ballNode.getY(); i < ballNode.getY() + TI_CM; i++) {
+		for(double i = ballNode.getY(); i < ballNode.getY() + 2*TI_CM; i++) {
 			ShortPoint current = new ShortPoint((short)ballNode.getX(), (short)i);
 			if(redPoints.contains(current)) {
 				pixelCount++;
@@ -237,7 +237,7 @@ public class AlgorithmController {
 			}
 		}
 		pixelCount = 0;
-		for(double i = ballNode.getY(); i > ballNode.getY() - TI_CM; i--) {
+		for(double i = ballNode.getY(); i > ballNode.getY() - 2*TI_CM; i--) {
 			ShortPoint current = new ShortPoint((short)ballNode.getX(), (short)i);
 			if(redPoints.contains(current)) {
 				pixelCount++;
@@ -526,6 +526,9 @@ public class AlgorithmController {
 		double angle = carVector.calculateAngle(ballVector);
 		Move move = new Move();
 		move.setDistance((length/777)*100);
+		if(carVector.crossProduct(ballVector) > 0) {
+			angle = -angle;
+		}
 		move.setAngle(angle);
 		moves.add(move);
 		
@@ -541,7 +544,23 @@ public class AlgorithmController {
 		
 	}
 	
+	public static boolean isCarInRightPlace(ArrayList<Point> car, CarStartPoint csp) {
+		if(calculateCarAngle(car) > csp.getCarAngle() + 5 || calculateCarAngle(car) < csp.getCarAngle() - 5) {
+			return false;
+		}
+		if(!(arePointsSimilar(car.get(0), csp.carPoints.get(0)) && arePointsSimilar(car.get(1), csp.carPoints.get(1)) && arePointsSimilar(car.get(2), csp.carPoints.get(2)))){
+			return false;
+		}
+		return true;
+		
+	}
 	
+	public static boolean arePointsSimilar(Point point1, Point point2) {
+		if((point1.x - 10 < point2.x && point1.x < point2.x + 10) && (point2.y - 10 < point1.y && point1.y < point2.y + 10)) {
+			return true;
+		}
+		return false;
+	}
 
 	public static ArrayList<Move> calculateMoveButThisOneIsBetterBecauseWeUseVectors(ArrayList<Node> graph, ArrayList<Point> car, int toIndex) {
 		//Sytem.out.println(car.get(1).x);
