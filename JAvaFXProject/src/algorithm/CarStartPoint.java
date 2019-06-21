@@ -13,5 +13,22 @@ public class CarStartPoint {
 		this.carPoints.addAll(carPoints);
 		this.carAngle = carAngle;
 	}
+
+	public ArrayList<Point> getCarPoints() {
+		return carPoints;
+	}
+
+	public void setCarPoints(ArrayList<Point> carPoints) {
+		this.carPoints = carPoints;
+	}
+
+	public double getCarAngle() {
+		return carAngle;
+	}
+
+	public void setCarAngle(double carAngle) {
+		this.carAngle = carAngle;
+	}
+
 	
 }

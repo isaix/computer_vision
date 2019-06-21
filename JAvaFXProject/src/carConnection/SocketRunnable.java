@@ -52,13 +52,14 @@ public class SocketRunnable implements Runnable{
 
 			
 			ArrayList<Point> points = CircleDetector.getvalidBallCoordinates();
-			if(points == null || points.isEmpty()) {
+			if(points == null) {
 				try {
-					Thread.sleep(500);
+					Thread.sleep(250);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				System.out.println("ISSA NULL");
 				continue;
 			}
 			////System.out.println("points: " + points.size());
@@ -71,7 +72,7 @@ public class SocketRunnable implements Runnable{
 
 			if(car == null || car.isEmpty()) {
 				try {
-					Thread.sleep(500);
+					Thread.sleep(250);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -98,41 +99,34 @@ public class SocketRunnable implements Runnable{
 				//System.out.println("Intet frame, start kameraet.");
 				e.printStackTrace();
 			}
-			/*
-			for(ShortPoint shortpoint : foundWalls2) {
-				pw.append("X:" + shortpoint.x +  ", Y:" + shortpoint.y + "\n");
-			}
-			*/
-			
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 			
 			ArrayList<Node> nodes = AlgorithmController.ConvertToGraph(points, car, foundWalls2);
 			
 			if(points.isEmpty()) {
-				Node carMiddle = new Node(-1, (int)(carStartPoint.carPoints.get(0).x), (int)(carStartPoint.carPoints.get(0).y));
-				nodes.clear();
-				nodes.add(carMiddle);
+				moves = AlgorithmController.calculateReturnToStartMove(car, carStartPoint);
+				
+				/*
 				if(AlgorithmController.isPossibleMove(car, carMiddle, foundWalls2)) {
 					moves = AlgorithmController.calculateMoveButThisOneIsBetterBecauseWeUseVectors(nodes, car, 0);
 					moves.get(0).setAngle(carStartPoint.carAngle);
 					client.sendMoves(moves);
 				}
 				else {
-					AlgorithmController.gotoWall(foundWalls2, moveToWall, car);
+					moves = AlgorithmController.gotoWall(foundWalls2, moveToWall, car);
 				}
-			}
-			
-			foundWalls2 = null;
-			//nodes = AlgorithmController.convertToMST(nodes, nodes.get(0));
-			for (Node node : nodes) {
-				////System.out.println("all nodes: " + node.getX()+ ","+node.getY());
+				*/
+				String resp = client.sendMoves(moves);
+				lastMove = moves;
+				moves = null;
+				points.clear();
+				car.clear();
+				moveToWall = false;
+				continue;
+				
+				
 			}
 			int nearestBall = AlgorithmController.findNearestBall(nodes);
+			System.out.println("NR BALL" + nearestBall);
 			
 			if(nearestBall == -1) {
 				moves = AlgorithmController.gotoWall(foundWalls2, moveToWall, car);
@@ -144,14 +138,14 @@ public class SocketRunnable implements Runnable{
 				moveToWall = false;
 				continue;
 				
+				
 			}
-			//ArrayList<Integer> moves = AlgorithmController.performDFS(nodes, nodes.get(0));
-			//Move move = AlgorithmController.calculateMove(nodes, car, nearestBall);
+			
+			foundWalls2 = null; 
+
+			
+
 			moves = AlgorithmController.calculateMoveButThisOneIsBetterBecauseWeUseVectors(nodes, car, nearestBall);
-			//System.out.println("move: " + nodes.get(nearestBall).getX() + ", " + nodes.get(nearestBall).getY());
-			//System.out.println("angle: " + move.getAngle());
-			////System.out.println("move: " + nodes.get(nearestBall).getX() + ", " + nodes.get(nearestBall).getY());
-			////System.out.println("angle: " + move.getAngle());
 			
 			if(moves.equals(lastMove)) {
 				continue;
