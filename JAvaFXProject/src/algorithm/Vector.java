@@ -28,7 +28,17 @@ public class Vector {
 	
 	public double calculateAngle(Vector otherVector) {
 		double cosV = (this.dotProduct(otherVector))/(this.getLength() * otherVector.getLength());
+		
 		return Math.toDegrees(Math.acos(cosV));
+	}
+	
+	public double calculateAbsoluteAngle(Vector otherVector) {
+		double v = Math.atan2(otherVector.y, otherVector.x) - Math.atan2(this.y, this.x);
+		if(v < 0) {
+			v += 2 * Math.PI;
+		}
+		return Math.toDegrees(v);
+		
 	}
 	
 	public double getLength() {

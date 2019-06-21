@@ -42,7 +42,7 @@ public class ObjRecognitionController
 	private void startCamera()
 	{
 		CircleDetector houghCirclesRun = new CircleDetector();
-		LineDetector houghLinesRun = new LineDetector();	
+		//LineDetector houghLinesRun = new LineDetector();	
 		CarDetector car = new CarDetector();
 
 		ColorDetector cd = new ColorDetector();
@@ -57,7 +57,7 @@ public class ObjRecognitionController
 		if (!this.cameraActive)
 		{
 			// start the video capture
-			this.capture.open(0);
+			this.capture.open(1);
 			// is the video stream available?
 			if (this.capture.isOpened())
 			{

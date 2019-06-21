@@ -1,3 +1,4 @@
+/*
 package objrecognition;
 
 
@@ -77,3 +78,4 @@ public class LineDetector {
 		return linesArray;
 	}
 }
+*/
