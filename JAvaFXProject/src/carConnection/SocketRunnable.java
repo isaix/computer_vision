@@ -25,6 +25,7 @@ public class SocketRunnable implements Runnable{
 	@Override
 	public void run() {
 		long startTime = System.currentTimeMillis();
+		long finishTime = 0;
 			
 		SocketClient client = new SocketClient();
 		client.startConnection("192.168.43.174", 6666);
@@ -159,7 +160,11 @@ public class SocketRunnable implements Runnable{
 			points.clear();
 			car.clear();
 			CarDetector.resetCarCoordinates();
-						
+			
+			if(resp.equals("JATAKCHEF")) {
+				finishTime = System.currentTimeMillis();
+			}
+			
 			if(resp.toLowerCase().equals("done")) {
 				client.stopConnection();
 				connected = false; 
@@ -167,6 +172,10 @@ public class SocketRunnable implements Runnable{
 			moveToWall = true;
 			
 		}
+		long seconds =(finishTime - startTime)/1000;
+		long minutes = seconds / 60;
+		seconds %= 60;
+		System.out.print("Det tog " + minutes + " minutter og " + seconds + "sekunder");
 		
 	}
 

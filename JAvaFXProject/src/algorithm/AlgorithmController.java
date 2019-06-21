@@ -32,17 +32,17 @@ public class AlgorithmController {
 			if(nodes.get(i).getType().equals(BallTypes.NORMAL)) {
 				Node to = nodes.get(i);
 				//Sytem.out.println("X: " + nodes.get(i).getX() + "Y: " + nodes.get(i).getY());
-				if(isPossibleMove(car, to, redPoints)) {
+				//if(isPossibleMove(car, to, redPoints)) {
 					nodes.get(0).addDistance(i, calculateDistance(nodes.get(0), to));
 					nodes.get(i).addDistance(0, calculateDistance(nodes.get(0), to));
-				}
+				//}
 			}
 			else {
 				Node to = nodes.get(i).getHelperNode();
-				if(isPossibleMove(car, to, redPoints)) {
+				//if(isPossibleMove(car, to, redPoints)) {
 					nodes.get(0).addDistance(i, calculateDistance(nodes.get(0), to));
 					nodes.get(i).addDistance(0, calculateDistance(nodes.get(0), to));
-				}
+				//}
 			}
 
 
