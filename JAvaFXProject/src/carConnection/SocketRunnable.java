@@ -61,7 +61,6 @@ public class SocketRunnable implements Runnable{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				System.out.println("ISSA NULL");
 				continue;
 			}
 			////System.out.println("points: " + points.size());
@@ -83,8 +82,10 @@ public class SocketRunnable implements Runnable{
 			}
 			
 			if(carStartPoint == null) {
-				//System.out.println("car = " + car);
 				carStartPoint = new CarStartPoint(car, AlgorithmController.calculateCarAngle(car));
+				System.out.print("CAR START POINT");
+				System.out.println(carStartPoint.getCarPoints().get(0).x + ", " + carStartPoint.getCarPoints().get(0).y);
+				
 			} else{
 				//System.out.println("startpoints " + carStartPoint.carAngle + ", " + carStartPoint.carPoints);
 			}
@@ -101,10 +102,11 @@ public class SocketRunnable implements Runnable{
 				//System.out.println("Intet frame, start kameraet.");
 				e.printStackTrace();
 			}
+			finishTime = System.currentTimeMillis(); 
 			
 			ArrayList<Node> nodes = AlgorithmController.ConvertToGraph(points, car, foundWalls2);
 			
-			if(points.isEmpty()) {
+			if(points.isEmpty() || finishTime - startTime > 60000) {
 				moves = AlgorithmController.calculateReturnToStartMove(car, carStartPoint);
 				
 				/*

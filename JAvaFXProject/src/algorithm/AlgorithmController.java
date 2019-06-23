@@ -517,23 +517,28 @@ public class AlgorithmController {
 	public static ArrayList<Move> calculateReturnToStartMove(ArrayList<Point> car, CarStartPoint csp){
 		ArrayList<Move> moves = new ArrayList<Move>();
 		Node startPoint = new Node((int)(csp.getCarPoints().get(0).x), (int) csp.getCarPoints().get(0).y);
+		System.out.println(startPoint.getX() + "," + startPoint.getY());
 		Node startMiddlePoint = new Node((int)((csp.getCarPoints().get(1).x + csp.getCarPoints().get(2).x)/2), (int)((csp.getCarPoints().get(1).y + csp.getCarPoints().get(2).y)/2));
 		Node middlePoint = new Node((int)((car.get(1).x + car.get(2).x)/2), (int)((car.get(1).y + car.get(2).y)/2));
 		double length = calculateDistance(startPoint, middlePoint);
 		
 		Vector carVector = new Vector(car.get(0).x - middlePoint.getX(), car.get(0).y - middlePoint.getY());
-		Vector ballVector = new Vector(startPoint.getX() - middlePoint.getX(), startPoint.getY() - middlePoint.getY());
-		double angle = carVector.calculateAngle(ballVector);
+		Vector tobias = new Vector(startPoint.getX() - middlePoint.getX(), startPoint.getY() - middlePoint.getY());
+		double angle = carVector.calculateAngle(tobias);
 		Move move = new Move();
 		move.setDistance((length/777)*100);
-		if(carVector.crossProduct(ballVector) > 0) {
+		
+		if(carVector.crossProduct(tobias) > 0) {
 			angle = -angle;
 		}
 		move.setAngle(angle);
 		moves.add(move);
 		
 		Vector carStartVector = new Vector(startPoint.getX() - startMiddlePoint.getX(), startPoint.getY() - startMiddlePoint.getY());
-		angle = ballVector.calculateAngle(carStartVector);
+		angle = tobias.calculateAngle(carStartVector);
+		if(tobias.crossProduct(carStartVector) > 0) {
+			angle = -angle;
+		}
 		
 		Move move2 = new Move();
 		move2.setDistance(-15);
