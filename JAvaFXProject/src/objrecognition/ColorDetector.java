@@ -29,21 +29,13 @@ public class ColorDetector {
 		Mat color_range_red_dark = new Mat();
 		Mat color_range_red_light = new Mat();
 
-
-		//bluring image to filter noises
-		//Imgproc.GaussianBlur(frame, blurImg, new Size(5,5),0);
 		Imgproc.medianBlur(frame, blurImg, 5);
 
-
-		//converting blured image from BGR to HSV
 		Imgproc.cvtColor(blurImg, hsvImage, Imgproc.COLOR_BGR2HSV);
 
-		//filtering red pixels based on given opencv HSV color range
 		Core.inRange(hsvImage, new Scalar(0, 70, 50), new Scalar(10, 255, 255), color_range_red_dark);
 		Core.inRange(hsvImage, new Scalar(170, 70, 50), new Scalar(180, 255, 255), color_range_red_light);
 
-
-		//applying bitwise_or to detect red from masks.
 		Core.bitwise_or(color_range_red_dark, color_range_red_light, frame);
 
 		for(int i = 0; i < frame.rows(); i++) {
@@ -59,7 +51,7 @@ public class ColorDetector {
 		
 		return foundWalls;
 	
-	        
+	 
 	        
 	}  
 
