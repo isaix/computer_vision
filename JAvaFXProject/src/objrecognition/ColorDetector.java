@@ -18,7 +18,6 @@ public class ColorDetector {
 	
 	
 	public static ArrayList<ShortPoint> run() {
-		System.out.println("ColorDetect Run");
 		ArrayList<ShortPoint> foundWalls = new ArrayList<ShortPoint>();
 
 

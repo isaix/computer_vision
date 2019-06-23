@@ -91,14 +91,11 @@ public class CarDetector {
 
 			if (carCoordinates.isEmpty() && !foundCoordinates.isEmpty()) {
 
-				//				//System.out.println("change");
-
 				carCoordinates.addAll(foundCoordinates);
 
 			} else {
 
 				if(!(carCoordinates.size() == foundCoordinates.size())) {
-					//					//System.out.println("change, new size");
 					carCoordinates.clear();
 					carCoordinates.addAll(foundCoordinates);
 				} else {
@@ -113,17 +110,14 @@ public class CarDetector {
 							}
 						}
 						if(!similar) {
-							//							//System.out.println("change, not similar");
 							carCoordinates.clear();
 							carCoordinates.addAll(foundCoordinates);
 							validCount = 0;
-							//							//System.out.println("valid count reset");
 							break;
 						} 
 					}
 					if (similar) {
 						validCount++;
-						//						//System.out.println("valid incremented: " + validCount);
 					}
 				}
 			} 
@@ -144,18 +138,14 @@ public class CarDetector {
 						}
 					}
 					if(!similar) {
-						//						//System.out.println("a new valid array");
 						validCarCoordinates.clear();
-						//						//System.out.println("unsorted Coordinates: " + carCoordinates);
 
 						validCarCoordinates.addAll(comparePoints(carCoordinates.get(0), carCoordinates.get(1), carCoordinates.get(2)));
 						validCount = 0;
-						//System.out.println("valid car coordinates: " + validCarCoordinates);
 						break;
 					} 
 				}
 				if (similar) {
-					//System.out.println("valid array is still the same");
 				}
 
 				validCount = 0;

@@ -32,7 +32,6 @@ public class CircleDetector {
 
 
 	static public ArrayList<Point> getvalidBallCoordinates(){
-		//System.out.println("before get method: " + validBallCoordinates);
 		if(noneFound) {
 			noneFound = false;
 			return validBallCoordinates;
@@ -66,7 +65,6 @@ public class CircleDetector {
 		circles = new Mat();
 		Imgproc.HoughCircles(gray, circles, Imgproc.HOUGH_GRADIENT, 1.0, (double)gray.rows()/16, 100.0, 30.0, 1, 25); 
 
-		////System.out.println(circles.cols());
 
 		for (int x = 0; x < circles.cols(); x++) {
 			double[] c = circles.get(0, x);
@@ -100,13 +98,6 @@ public class CircleDetector {
 
 		}
 
-		//		//System.out.println("found " + foundCoordinates);
-		//		//System.out.println("valid " + validBallCoordinates);
-		//		//System.out.println("ball " + ballCoordinates);
-		//
-		//
-
-
 
 		// only check for changes every frameDelay number of frames
 		if(counter%frameDelay == 0) {
@@ -114,14 +105,12 @@ public class CircleDetector {
 
 			if (ballCoordinates.isEmpty() && !foundCoordinates.isEmpty()) {
 
-				//				//System.out.println("change");
 
 				ballCoordinates.addAll(foundCoordinates);
 
 			} else {
 
 				if(!(ballCoordinates.size() == foundCoordinates.size())) {
-					//					//System.out.println("change, new size");
 					ballCoordinates.clear();
 					ballCoordinates.addAll(foundCoordinates);
 				} else {
@@ -136,29 +125,19 @@ public class CircleDetector {
 							}
 						}
 						if(!similar) {
-							//							//System.out.println("change, not similar");
 							ballCoordinates.clear();
 							ballCoordinates.addAll(foundCoordinates);
 							validCount = 0;
-							//							//System.out.println("valid count reset");
 							break;
 						}  
 					}
 					if (similar) {
 						validCount++;
-						//System.out.println("valid incremented: " + validCount);
 					}
 
 				}
 
 			} 
-						
-
-			//System.out.println("\n found balls: " + ballCoordinates.size());
-			//System.out.println("and the coordinates are: " + ballCoordinates);
-
-			//System.out.println("END \n");
-
 			
 			foundCoordinates.clear();
 
@@ -169,15 +148,6 @@ public class CircleDetector {
 				}
 
 				boolean similar = false;
-				
-
-//				if(!(validBallCoordinates.size() == ballCoordinates.size())) {
-//					//					//System.out.println("change, new size");
-//					
-//					validBallCoordinates.clear();
-//					validBallCoordinates.addAll(ballCoordinates);
-//				} else {
-
 					for (Point ballCoordinate : ballCoordinates) {
 						for (Point validBallCoordinate : validBallCoordinates) {
 							similar = false;
@@ -187,19 +157,13 @@ public class CircleDetector {
 							}
 						}
 						if(!similar) {
-							//System.out.println("a new valid array");
 							validBallCoordinates.clear();
 							validBallCoordinates.addAll(ballCoordinates);
 
 							validCount = 0;
-							////System.out.println("valid count reset");
 							break;
 						} 
 					}
-					if (similar) {
-						//System.out.println("valid array is still the same");
-					}
-//				}
 				validCount = 0;
 				
 			}
@@ -226,10 +190,8 @@ public class CircleDetector {
 
 
 	public void testImage(Mat image) {
-		//System.out.println(foundCoordinates);
 		for(int i = 0; i<15 ; i++) {
 			image = run(image);
-			//System.out.println(foundCoordinates);
 
 		}
 	}

@@ -135,7 +135,6 @@ public class SocketRunnable implements Runnable{
 				
 			}
 			int nearestBall = AlgorithmController.findNearestBall(nodes);
-			System.out.println("NR BALL" + nearestBall);
 			
 			if(nearestBall == -1) {
 				moves = AlgorithmController.gotoWall(foundWalls2, moveToWall, car);
@@ -180,7 +179,6 @@ public class SocketRunnable implements Runnable{
 		long seconds =(finishTime - startTime)/1000;
 		long minutes = seconds / 60;
 		seconds %= 60;
-		System.out.print("Det tog " + minutes + " minutter og " + seconds + "sekunder");
 		client.stopConnection();
 		System.exit(0);
 		
